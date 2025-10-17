@@ -688,12 +688,12 @@ static int ram_console_file_open(struct inode *inode, struct file *file)
 	return single_open(file, ram_console_show, inode->i_private);
 }
 
-static const struct file_operations ram_console_file_ops = {
-	.owner = THIS_MODULE,
-	.open = ram_console_file_open,
-	.read = seq_read,
-	.llseek = seq_lseek,
-	.release = single_release,
+static const struct proc_ops ram_console_file_ops = {
+	//.owner = THIS_MODULE,
+	.proc_open = ram_console_file_open,
+	.proc_read = seq_read,
+	.proc_lseek = seq_lseek,
+	.proc_release = single_release,
 };
 
 static int __init ram_console_late_init(void)
@@ -789,12 +789,12 @@ late_initcall(ram_console_late_init);
 
 #define LAST_RR_MEMCPY(rr_item, str, len)				\
 	if (ram_console_buffer) {					\
-		strlcpy(RR_LINUX->rr_item, str, len);	\
+		strncpy(RR_LINUX->rr_item, str, len);	\
 	}
 
 #define LAST_RR_MEMCPY_WITH_ID(rr_item, id, str, len)			\
 	if (ram_console_buffer) {					\
-		strlcpy(RR_LINUX->rr_item[id], str, len);	\
+		strncpy(RR_LINUX->rr_item[id], str, len);	\
 	}
 
 void aee_rr_rec_reboot_mode(u8 mode)
