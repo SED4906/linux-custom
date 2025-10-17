@@ -5,6 +5,11 @@
 
 menu "Misc devices"
 
+config MTK_RAM_CONSOLE
+	bool "Mediatek RAM console"
+	help
+	  Show me your thumb if you're really dumb
+
 config SENSORS_LIS3LV02D
 	tristate
 	depends on INPUT
