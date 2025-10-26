@@ -10,11 +10,11 @@
 
 / {
 	model = "MediaTek MT8127 Amazon Fire 7 (ford, 2015)";
-	compatible = "amazon,ford", "mediatek,mt8127";
+	compatible = "mediatek,mt8127";
 
 	memory {
 		device_type = "memory";
-		reg = <0 0x80000000 0 0x40000000>;
+		reg = <0 0x80000000 0 0x37900000>;
 	};
 
 	reserved-memory {
