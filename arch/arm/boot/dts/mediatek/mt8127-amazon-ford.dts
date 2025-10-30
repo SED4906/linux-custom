@@ -12,13 +12,29 @@
 	model = "MediaTek MT8127 Amazon Fire 7 (ford, 2015)";
 	compatible = "mediatek,mt8127";
 
+	chosen {
+		stdout-path = &mtk_fb;
+		#address-cells = <2>;
+		#size-cells = <2>;
+		ranges;
+
+		mtk_fb: framebuffer@b7a00000 {
+			compatible = "simple-framebuffer";
+			width = <1024>;
+			height = <600>;
+			reg = <0 0xb7a00000 0 (1024 * 600 * 4)>;
+			stride = <(1024 * 4)>;
+			format = "r8g8b8";
+		};
+	};
+
 	memory {
 		device_type = "memory";
 		reg = <0 0x80000000 0 0x37900000>;
 	};
 
 	reserved-memory {
-		mtk-ram-console {
+		mtk_ram_console {
 			reg = <0 0x83F00000 0 0x100000>;
 		};
 	};
