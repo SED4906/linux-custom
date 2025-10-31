@@ -8,6 +8,7 @@
 /dts-v1/;
 #include "mt8127.dtsi"
 #include <dt-bindings/phy/phy.h>
+#include <dt-bindings/clock/mt2701-clk.h>
 
 / {
 	model = "MediaTek MT8127 Amazon Fire 7 (ford, 2015)";
@@ -35,9 +36,9 @@
 		interrupts = <GIC_SPI 32 IRQ_TYPE_LEVEL_LOW>;
 		interrupt-names = "mc";
 		phys = <&uport PHY_TYPE_USB2>;
-		clocks = <&pericfg 10>,
-			 <&pericfg 29>,
-			 <&pericfg 31>;
+		clocks = <&pericfg CLK_PERI_USB0>,
+			 <&pericfg CLK_PERI_USB0_MCU>,
+			 <&pericfg CLK_PERI_USB_SLV>;
 		clock-names = "main","mcu","univpll";
 		dr_mode = "otg";
 		usb-role-switch;
@@ -59,7 +60,7 @@
 
 		uport: usb-phy@11210800 {
 			reg = <0 0x11210800 0 0x0100>;
-			clocks = <&pericfg 31>;
+			clocks = <&pericfg CLK_PERI_USB_SLV>;
 			clock-names = "ref";
 			#phy-cells = <1>;
 			status = "okay";
