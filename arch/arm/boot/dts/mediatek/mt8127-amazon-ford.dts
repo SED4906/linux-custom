@@ -36,7 +36,6 @@
 		interrupts = <GIC_SPI 32 IRQ_TYPE_LEVEL_LOW>;
 		interrupt-names = "mc";
 		phys = <&uport PHY_TYPE_USB2>;
-		dr_mode = "otg";
 		clocks = <&pericfg CLK_PERI_USB0>,
 			 <&pericfg CLK_PERI_USB0_MCU>,
 			 <&pericfg CLK_PERI_USB_SLV>;
