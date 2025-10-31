@@ -79,20 +79,20 @@
 	};
 
 	pericfg: syscon@10003000 {
-		compatible = "mediatek,mt8127-pericfg", "syscon";
+		compatible = "mediatek,mt8127-pericfg", "mediatek,mt2701-pericfg", "syscon";
 		reg = <0 0x10003000 0 0x1000>;
 		#clock-cells = <1>;
 		#reset-cells = <1>;
 	};
 
 	topckgen: syscon@10000000 {
-		compatible = "mediatek,mt8127-topckgen", "syscon";
+		compatible = "mediatek,mt8127-topckgen", "mediatek,mt2701-topckgen", "syscon";
 		reg = <0 0x10000000 0 0x1000>;
 		#clock-cells = <1>;
 	};
 
 	apmixedsys: syscon@10209000 {
-		compatible = "mediatek,mt8127-apmixedsys", "syscon";
+		compatible = "mediatek,mt8127-apmixedsys", "mediatek,mt2701-apmixedsys", "syscon";
 		reg = <0 0x10209000 0 0x1000>;
 		#clock-cells = <1>;
 	};
