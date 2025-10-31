@@ -33,7 +33,7 @@
 	usb@11200000 {
 		compatible = "mediatek,mt8127-musb", "mediatek,mtk-musb";
 		reg = <0 0x11200000 0 0x1000>;
-		interrupts = <GIC_SPI 64 IRQ_TYPE_LEVEL_LOW>;
+		interrupts = <GIC_SPI 32 IRQ_TYPE_LEVEL_LOW>;
 		interrupt-names = "mc";
 		phys = <&uport PHY_TYPE_USB2>;
 		dr_mode = "otg";
