@@ -39,6 +39,13 @@
 			 <&pericfg 29>,
 			 <&pericfg 31>;
 		clock-names = "main","mcu","univpll";
+		dr_mode = "otg";
+		usb-role-switch;
+
+		connector {
+			compatible = "usb-b-connector";
+			type = "micro";
+		};
 	};
 
 	uphy: t-phy@11210000 {
