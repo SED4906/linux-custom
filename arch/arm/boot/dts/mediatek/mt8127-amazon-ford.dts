@@ -53,7 +53,7 @@
 
 		uport: usb-phy@11210800 {
 			reg = <0 0x11210800 0 0x0100>;
-			clocks = <&topckgen CLK_TOP_USB_PHY48M>;
+			clocks = <&pericfg CLK_PERI_USB_SLV>;
 			clock-names = "ref";
 			#phy-cells = <1>;
 			status = "okay";
