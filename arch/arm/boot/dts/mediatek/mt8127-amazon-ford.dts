@@ -22,9 +22,9 @@
 			compatible = "simple-framebuffer";
 			width = <1024>;
 			height = <600>;
-			reg = <0 0xb7a00000 0 (1024 * 600 * 4)>;
-			stride = <(1024 * 4)>;
-			format = "r8g8b8";
+			reg = <0 0xb7a00000 0 (1024 * 600 * 2)>;
+			stride = <(1024 * 2)>;
+			format = "r5g6b5";
 		};
 	};
 
@@ -34,12 +34,12 @@
 	};
 
 	reserved-memory {
-		mtk_ram_console {
+		#address-cells = <2>;
+		#size-cells = <2>;
+		ranges;
+
+		mtk_ram_console@83f00000 {
 			reg = <0 0x83F00000 0 0x100000>;
 		};
 	};
-};
-
-&uart0 {
-	status = "okay";
 };
