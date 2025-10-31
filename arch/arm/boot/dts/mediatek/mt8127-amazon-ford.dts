@@ -8,6 +8,7 @@
 /dts-v1/;
 #include "mt8127.dtsi"
 #include <dt-bindings/phy/phy.h>
+#include <dt-bindings/clock/mt2701-clk.h>
 
 / {
 	model = "MediaTek MT8127 Amazon Fire 7 (ford, 2015)";
@@ -29,31 +30,34 @@
 		};
 	};
 
-	phys: phy {
-		#phy-cells = <0>;
-	};
-
 	usb@11200000 {
 		compatible = "mediatek,mt8127-musb", "mediatek,mtk-musb";
 		reg = <0 0x11200000 0 0x1000>;
 		interrupts = <GIC_SPI 64 IRQ_TYPE_LEVEL_LOW>;
 		interrupt-names = "mc";
-		phys = <&phys>;
+		phys = <&uport PHY_TYPE_USB2>;
 		dr_mode = "otg";
-		clocks = <&system_clk>, <&system_clk>, <&univpll_clk>;
+		clocks = <&pericfg CLK_PERI_USB0>,
+			 <&pericfg CLK_PERI_USB0_MCU>,
+			 <&pericfg CLK_PERI_USB_SLV>;
 		clock-names = "main","mcu","univpll";
 	};
 
-	clocks {
+	uphy: t-phy@11210000 {
+		compatible = "mediatek,mt8127-tphy",
+		"mediatek,generic-tphy-v1";
+		reg = <0 0x11210000 0 0x0800>;
 		#address-cells = <2>;
 		#size-cells = <2>;
-		compatible = "simple-bus";
 		ranges;
+		status = "okay";
 
-		univpll_clk: dummy48m {
-			compatible = "fixed-clock";
-			clock-frequency = <48000000>;
-			#clock-cells = <0>;
+		uport: usb-phy@11210800 {
+			reg = <0 0x11210800 0 0x0100>;
+			clocks = <&topckgen CLK_TOP_USB_PHY48M>;
+			clock-names = "ref";
+			#phy-cells = <1>;
+			status = "okay";
 		};
 	};
 
