@@ -91,6 +91,12 @@
 		#clock-cells = <1>;
 	};
 
+	apmixedsys: syscon@10209000 {
+		compatible = "mediatek,mt8127-apmixedsys", "syscon";
+		reg = <0 0x10209000 0 0x1000>;
+		#clock-cells = <1>;
+	};
+
 	timer {
 		compatible = "arm,armv7-timer";
 		interrupt-parent = <&gic>;
