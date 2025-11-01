@@ -8,7 +8,7 @@
 /dts-v1/;
 #include "mt8127.dtsi"
 #include <dt-bindings/phy/phy.h>
-#include <dt-bindings/clock/mt2701-clk.h>
+#include <dt-bindings/clock/mt8127-clk.h>
 
 / {
 	model = "MediaTek MT8127 Amazon Fire 7 (ford, 2015)";
@@ -49,6 +49,11 @@
 		};
 	};
 
+	uphyreg: regulator {
+		regulator-min-microvolt = <1800000>;
+		regulator-max-microvolt = <3300000>;
+	};
+
 	uphy: t-phy@11210000 {
 		compatible = "mediatek,mt8127-tphy",
 		"mediatek,generic-tphy-v1";
@@ -63,6 +68,7 @@
 			clocks = <&apmixedsys CLK_APMIXED_UNIVPLL>;
 			clock-names = "ref";
 			#phy-cells = <1>;
+			phy-supply = <&uphyreg>;
 			status = "okay";
 		};
 	};
