@@ -37,8 +37,8 @@
 		interrupt-names = "mc";
 		phys = <&uport PHY_TYPE_USB2>;
 		clocks = <&pericfg CLK_PERI_USB0>,
-			 <&pericfg CLK_PERI_USB0_MCU>,
-			 <&pericfg CLK_PERI_USB_SLV>;
+			 <&pericfg CLK_PERI_USB0>,
+			 <&apmixedsys CLK_APMIXED_UNIVPLL>;
 		clock-names = "main","mcu","univpll";
 		dr_mode = "otg";
 		usb-role-switch;
