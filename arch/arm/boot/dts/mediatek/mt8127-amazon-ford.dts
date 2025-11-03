@@ -59,6 +59,7 @@
 		status = "okay";
 
 		uport: usb-phy@11210800 {
+			phy_type = "ulpi";
 			reg = <0 0x11210800 0 0x0100>;
 			clocks = <&apmixedsys CLK_APMIXED_UNIVPLL>;
 			clock-names = "ref";
