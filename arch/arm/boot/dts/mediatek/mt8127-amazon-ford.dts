@@ -38,7 +38,7 @@
 		phys = <&uport PHY_TYPE_USB2>;
 		clocks = <&pericfg CLK_PERI_USB0>,
 			 <&pericfg CLK_PERI_USB0>,
-			 <&apmixedsys CLK_APMIXED_UNIVPLL>;
+			 <&usb48m_clk>;
 		clock-names = "main","mcu","univpll";
 		dr_mode = "otg";
 		usb-role-switch;
@@ -47,11 +47,6 @@
 			compatible = "usb-b-connector";
 			type = "micro";
 		};
-	};
-
-	uphyreg: regulator {
-		regulator-min-microvolt = <1800000>;
-		regulator-max-microvolt = <3300000>;
 	};
 
 	uphy: t-phy@11210000 {
@@ -65,10 +60,9 @@
 
 		uport: usb-phy@11210800 {
 			reg = <0 0x11210800 0 0x0100>;
-			clocks = <&apmixedsys CLK_APMIXED_UNIVPLL>;
+			clocks = <&usb48m_clk>;
 			clock-names = "ref";
 			#phy-cells = <1>;
-			phy-supply = <&uphyreg>;
 			status = "okay";
 		};
 	};
