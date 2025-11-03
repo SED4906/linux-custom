@@ -76,12 +76,6 @@
 			clock-frequency = <26000000>;
 			#clock-cells = <0>;
                 };
-
-		usb48m_clk: dummy26m {
-			compatible = "fixed-clock";
-			clock-frequency = <48000000>;
-			#clock-cells = <0>;
-		};
 	};
 
 	pericfg: syscon@10003000 {

@@ -37,8 +37,8 @@
 		interrupt-names = "mc";
 		phys = <&uport PHY_TYPE_USB2>;
 		clocks = <&pericfg CLK_PERI_USB0>,
-			 <&pericfg CLK_PERI_USB0>,
-			 <&usb48m_clk>;
+			 <&pericfg CLK_PERI_USB0_MCU>,
+			 <&apmixedsys CLK_APMIXED_UNIVPLL>;
 		clock-names = "main","mcu","univpll";
 		dr_mode = "otg";
 		usb-role-switch;
@@ -60,7 +60,7 @@
 
 		uport: usb-phy@11210800 {
 			reg = <0 0x11210800 0 0x0100>;
-			clocks = <&usb48m_clk>;
+			clocks = <&apmixedsys CLK_APMIXED_UNIVPLL>;
 			clock-names = "ref";
 			#phy-cells = <1>;
 			status = "okay";
