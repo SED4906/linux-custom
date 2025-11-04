@@ -46,6 +46,7 @@
 		connector {
 			compatible = "usb-b-connector";
 			type = "micro";
+			vbus-supply = <&usb_vbus>;
 		};
 	};
 
@@ -59,13 +60,20 @@
 		status = "okay";
 
 		uport: usb-phy@11210800 {
-			phy_type = "ulpi";
 			reg = <0 0x11210800 0 0x0100>;
 			clocks = <&apmixedsys CLK_APMIXED_UNIVPLL>;
 			clock-names = "ref";
 			#phy-cells = <1>;
 			status = "okay";
+
 		};
+	};
+
+	usb_vbus: regulator {
+		compatible = "regulator-fixed";
+		regulator-name = "usb_vbus";
+		regulator-min-microvolt = <5000000>;
+		regulator-max-microvolt = <5000000>;
 	};
 
 	memory {
