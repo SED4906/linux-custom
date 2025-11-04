@@ -7,6 +7,8 @@
 
 #include <dt-bindings/interrupt-controller/irq.h>
 #include <dt-bindings/interrupt-controller/arm-gic.h>
+#include <dt-bindings/clock/mt2701-clk.h>
+#include <dt-bindings/power/mt2701-power.h>
 
 / {
 	#address-cells = <2>;
@@ -79,22 +81,40 @@
 	};
 
 	pericfg: syscon@10003000 {
-		compatible = "mediatek,mt8127-pericfg", "syscon";
+		compatible = "mediatek,mt2701-pericfg", "syscon";
 		reg = <0 0x10003000 0 0x1000>;
 		#clock-cells = <1>;
 		#reset-cells = <1>;
 	};
 
 	topckgen: syscon@10000000 {
-		compatible = "mediatek,mt8127-topckgen", "syscon";
+		compatible = "mediatek,mt2701-topckgen", "syscon";
 		reg = <0 0x10000000 0 0x1000>;
 		#clock-cells = <1>;
 	};
 
 	apmixedsys: syscon@10209000 {
-		compatible = "mediatek,mt8127-apmixedsys", "syscon";
+		compatible = "mediatek,mt2701-apmixedsys", "syscon";
 		reg = <0 0x10209000 0 0x1000>;
 		#clock-cells = <1>;
+	};
+
+	infracfg: syscon@10001000 {
+		compatible = "mediatek,mt2701-infracfg", "syscon";
+		reg = <0 0x10001000 0 0x1000>;
+		#clock-cells = <1>;
+		#reset-cells = <1>;
+	};
+
+	scpsys: power-controller@10006000 {
+		compatible = "mediatek,mt2701-scpsys", "syscon";
+		#power-domain-cells = <1>;
+		reg = <0 0x10006000 0 0x1000>;
+		infracfg = <&infracfg>;
+		clocks = <&topckgen CLK_TOP_MM_SEL>,
+		<&topckgen CLK_TOP_MFG_SEL>,
+		<&topckgen CLK_TOP_ETHIF_SEL>;
+		clock-names = "mm", "mfg", "ethif";
 	};
 
 	timer {

@@ -8,7 +8,6 @@
 /dts-v1/;
 #include "mt8127.dtsi"
 #include <dt-bindings/phy/phy.h>
-#include <dt-bindings/clock/mt8127-clk.h>
 
 / {
 	model = "MediaTek MT8127 Amazon Fire 7 (ford, 2015)";
@@ -42,11 +41,11 @@
 		clock-names = "main","mcu","univpll";
 		dr_mode = "otg";
 		usb-role-switch;
+		power-domains = <&scpsys MT2701_POWER_DOMAIN_IFR_MSC>;
 
 		connector {
 			compatible = "usb-b-connector";
 			type = "micro";
-			vbus-supply = <&usb_vbus>;
 		};
 	};
 
@@ -67,13 +66,6 @@
 			status = "okay";
 
 		};
-	};
-
-	usb_vbus: regulator {
-		compatible = "regulator-fixed";
-		regulator-name = "usb_vbus";
-		regulator-min-microvolt = <5000000>;
-		regulator-max-microvolt = <5000000>;
 	};
 
 	memory {
