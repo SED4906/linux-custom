@@ -41,7 +41,6 @@
 		clock-names = "main","mcu","univpll";
 		dr_mode = "otg";
 		usb-role-switch;
-		power-domains = <&scpsys MT2701_POWER_DOMAIN_IFR_MSC>;
 
 		connector {
 			compatible = "usb-b-connector";
@@ -56,15 +55,12 @@
 		#address-cells = <2>;
 		#size-cells = <2>;
 		ranges;
-		status = "okay";
 
 		uport: usb-phy@11210800 {
 			reg = <0 0x11210800 0 0x0100>;
 			clocks = <&apmixedsys CLK_APMIXED_UNIVPLL>;
 			clock-names = "ref";
 			#phy-cells = <1>;
-			status = "okay";
-
 		};
 	};
 
