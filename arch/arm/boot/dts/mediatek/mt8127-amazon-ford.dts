@@ -72,10 +72,6 @@
 		clock-names = "main", "dma";
 		clock-div = <16>;
 		clock-frequency = <400000>;
-		mediatek,have-pmic;
-
-		#address-cells = <1>;
-		#size-cells = <0>;
 	};
 
 	i2c1: i2c@11008000 {
@@ -86,10 +82,6 @@
 		clock-names = "main", "dma";
 		clock-div = <16>;
 		clock-frequency = <400000>;
-		mediatek,have-pmic;
-
-		#address-cells = <1>;
-		#size-cells = <0>;
 	};
 
 	i2c2: i2c@11009000 {
@@ -100,10 +92,6 @@
 		clock-names = "main", "dma";
 		clock-div = <16>;
 		clock-frequency = <400000>;
-		mediatek,have-pmic;
-
-		#address-cells = <1>;
-		#size-cells = <0>;
 	};
 
 	memory {
