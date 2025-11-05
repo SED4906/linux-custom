@@ -75,16 +75,6 @@
 
 		#address-cells = <1>;
 		#size-cells = <0>;
-
-		touchscreen@38 {
-			compatible = "focaltech,fts5452";
-			reg = <0x38>;
-
-			interrupts = <GIC_SPI 113 IRQ_TYPE_LEVEL_HIGH>;
-
-			touchscreen-size-x = <1024>;
-			touchscreen-size-y = <600>;
-		};
 	};
 
 	i2c1: i2c@11008000 {
@@ -111,6 +101,16 @@
 
 		#address-cells = <1>;
 		#size-cells = <0>;
+
+		touchscreen@38 {
+			compatible = "focaltech,fts5452";
+			reg = <0x38>;
+
+			interrupts = <GIC_SPI 113 IRQ_TYPE_LEVEL_HIGH>;
+
+			touchscreen-size-x = <1024>;
+			touchscreen-size-y = <600>;
+		};
 	};
 
 	memory {
