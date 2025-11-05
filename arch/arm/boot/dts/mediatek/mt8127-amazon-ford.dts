@@ -64,6 +64,48 @@
 		};
 	};
 
+	i2c0: i2c@11007000 {
+		compatible = "mediatek,mt8127-i2c", "mediatek,mt6577-i2c";
+		reg = <0x11007000 0x70>, <0x11000200 0x80>;
+		interrupts = <GIC_SPI 44 IRQ_TYPE_LEVEL_LOW>;
+		clocks = <&pericfg CLK_PERI_I2C0>, <&pericfg CLK_PERI_AP_DMA>;
+		clock-names = "main", "dma";
+		clock-div = <16>;
+		clock-frequency = <400000>;
+		mediatek,have-pmic;
+
+		#address-cells = <1>;
+		#size-cells = <0>;
+	};
+
+	i2c1: i2c@11008000 {
+		compatible = "mediatek,mt8127-i2c", "mediatek,mt6577-i2c";
+		reg = <0x11008000 0x70>, <0x11000280 0x80>;
+		interrupts = <GIC_SPI 45 IRQ_TYPE_LEVEL_LOW>;
+		clocks = <&pericfg CLK_PERI_I2C1>, <&pericfg CLK_PERI_AP_DMA>;
+		clock-names = "main", "dma";
+		clock-div = <16>;
+		clock-frequency = <400000>;
+		mediatek,have-pmic;
+
+		#address-cells = <1>;
+		#size-cells = <0>;
+	};
+
+	i2c2: i2c@11009000 {
+		compatible = "mediatek,mt8127-i2c", "mediatek,mt6577-i2c";
+		reg = <0x11009000 0x70>, <0x11000300 0x80>;
+		interrupts = <GIC_SPI 46 IRQ_TYPE_LEVEL_LOW>;
+		clocks = <&pericfg CLK_PERI_I2C2>, <&pericfg CLK_PERI_AP_DMA>;
+		clock-names = "main", "dma";
+		clock-div = <16>;
+		clock-frequency = <400000>;
+		mediatek,have-pmic;
+
+		#address-cells = <1>;
+		#size-cells = <0>;
+	};
+
 	memory {
 		device_type = "memory";
 		reg = <0 0x80000000 0 0x37900000>;
