@@ -193,5 +193,14 @@
 			reg = <0 0x10007000 0 0x100>;
 			interrupts = <GIC_SPI 88 IRQ_TYPE_LEVEL_LOW>;
 		};
+
+		pio: pinctrl@1000b000 {
+			compatible = "mediatek,mt8127-pinctrl";
+			reg = <0 0x1000B000 0 0x1000>;
+			gpio-controller;
+			#gpio-cells = <2>;
+			interrupt-controller;
+			#interrupt-cells = <2>;
+		};
 	};
 };

@@ -106,7 +106,7 @@
 			compatible = "focaltech,fts5452";
 			reg = <0x38>;
 
-			interrupts = <GIC_SPI 113 IRQ_TYPE_LEVEL_HIGH>;
+			interrupts = <&pio 7 IRQ_TYPE_EDGE_FALLING>;
 
 			touchscreen-size-x = <1024>;
 			touchscreen-size-y = <600>;
