@@ -72,6 +72,17 @@
 		clock-names = "main", "dma";
 		clock-div = <16>;
 		clock-frequency = <400000>;
+
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		touchscreen@38 {
+			compatible = "focaltech,fts5452";
+			reg = <0x38>;
+
+			touchscreen-size-x = <1024>;
+			touchscreen-size-y = <600>;
+		};
 	};
 
 	i2c1: i2c@11008000 {
@@ -82,6 +93,9 @@
 		clock-names = "main", "dma";
 		clock-div = <16>;
 		clock-frequency = <400000>;
+
+		#address-cells = <1>;
+		#size-cells = <0>;
 	};
 
 	i2c2: i2c@11009000 {
@@ -92,6 +106,9 @@
 		clock-names = "main", "dma";
 		clock-div = <16>;
 		clock-frequency = <400000>;
+
+		#address-cells = <1>;
+		#size-cells = <0>;
 	};
 
 	memory {
