@@ -8,6 +8,7 @@
 /dts-v1/;
 #include "mt8127.dtsi"
 #include <dt-bindings/phy/phy.h>
+#include "mt2701-pinfunc.h"
 
 / {
 	model = "MediaTek MT8127 Amazon Fire 7 (ford, 2015)";
@@ -114,6 +115,38 @@
 		};
 	};
 
+	reg_1p8v: regulator-1p8v {
+		compatible = "regulator-fixed";
+		regulator-name = "fixed-1.8V";
+		regulator-min-microvolt = <1800000>;
+		regulator-max-microvolt = <1800000>;
+		regulator-boot-on;
+		regulator-always-on;
+	};
+
+	reg_3p3v: regulator-3p3v {
+		compatible = "regulator-fixed";
+		regulator-name = "fixed-3.3V";
+		regulator-min-microvolt = <3300000>;
+		regulator-max-microvolt = <3300000>;
+		regulator-boot-on;
+		regulator-always-on;
+	};
+
+	mmc0: mmc@11230000 {
+		compatible = "mediatek,mt2701-mmc";
+		reg = <0 0x11230000 0 0x1000>;
+		interrupts = <GIC_SPI 39 IRQ_TYPE_LEVEL_LOW>;
+		vmmc-supply = <&reg_3p3v>;
+		vqmmc-supply = <&reg_1p8v>;
+		clocks = <&pericfg CLK_PERI_MSDC30_0>,
+		<&topckgen CLK_TOP_MSDC30_0_SEL>;
+		clock-names = "source", "hclk";
+		pinctrl-names = "default", "state_uhs";
+		pinctrl-0 = <&mmc0_pins_default>;
+		pinctrl-1 = <&mmc0_pins_uhs>;
+	};
+
 	memory {
 		device_type = "memory";
 		reg = <0 0x80000000 0 0x37900000>;
@@ -126,6 +159,62 @@
 
 		mtk_ram_console@83f00000 {
 			reg = <0 0x83F00000 0 0x100000>;
+		};
+	};
+};
+
+&pio {
+	mmc0_pins_default: mmc0default {
+		pins-cmd-dat {
+			pinmux = <MT2701_PIN_111_MSDC0_DAT7__FUNC_MSDC0_DAT7>,
+			<MT2701_PIN_112_MSDC0_DAT6__FUNC_MSDC0_DAT6>,
+			<MT2701_PIN_113_MSDC0_DAT5__FUNC_MSDC0_DAT5>,
+			<MT2701_PIN_114_MSDC0_DAT4__FUNC_MSDC0_DAT4>,
+			<MT2701_PIN_118_MSDC0_DAT3__FUNC_MSDC0_DAT3>,
+			<MT2701_PIN_119_MSDC0_DAT2__FUNC_MSDC0_DAT2>,
+			<MT2701_PIN_120_MSDC0_DAT1__FUNC_MSDC0_DAT1>,
+			<MT2701_PIN_121_MSDC0_DAT0__FUNC_MSDC0_DAT0>,
+			<MT2701_PIN_116_MSDC0_CMD__FUNC_MSDC0_CMD>;
+			input-enable;
+			bias-pull-up;
+		};
+
+		pins-clk {
+			pinmux = <MT2701_PIN_117_MSDC0_CLK__FUNC_MSDC0_CLK>;
+			bias-pull-down;
+		};
+
+		pins-rst {
+			pinmux = <MT2701_PIN_115_MSDC0_RSTB__FUNC_MSDC0_RSTB>;
+			bias-pull-up;
+		};
+	};
+
+	mmc0_pins_uhs: mmc0 {
+		pins-cmd-dat {
+			pinmux = <MT2701_PIN_111_MSDC0_DAT7__FUNC_MSDC0_DAT7>,
+			<MT2701_PIN_112_MSDC0_DAT6__FUNC_MSDC0_DAT6>,
+			<MT2701_PIN_113_MSDC0_DAT5__FUNC_MSDC0_DAT5>,
+			<MT2701_PIN_114_MSDC0_DAT4__FUNC_MSDC0_DAT4>,
+			<MT2701_PIN_118_MSDC0_DAT3__FUNC_MSDC0_DAT3>,
+			<MT2701_PIN_119_MSDC0_DAT2__FUNC_MSDC0_DAT2>,
+			<MT2701_PIN_120_MSDC0_DAT1__FUNC_MSDC0_DAT1>,
+			<MT2701_PIN_121_MSDC0_DAT0__FUNC_MSDC0_DAT0>,
+			<MT2701_PIN_116_MSDC0_CMD__FUNC_MSDC0_CMD>;
+			input-enable;
+			drive-strength = <2>;
+			bias-pull-up = <MTK_PUPD_SET_R1R0_01>;
+		};
+
+		pins-clk {
+			pinmux = <MT2701_PIN_117_MSDC0_CLK__FUNC_MSDC0_CLK>;
+			drive-strength = <2>;
+			bias-pull-down = <MTK_PUPD_SET_R1R0_01>;
+		};
+
+		pins-rst {
+			pinmux = <MT2701_PIN_115_MSDC0_RSTB__FUNC_MSDC0_RSTB>;
+			bias-pull-up;
 		};
 	};
 };
