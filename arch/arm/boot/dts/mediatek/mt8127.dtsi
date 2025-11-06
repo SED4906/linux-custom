@@ -194,13 +194,20 @@
 			interrupts = <GIC_SPI 88 IRQ_TYPE_LEVEL_LOW>;
 		};
 
+		syscfg_pctl_a: syscfg@10005000 {
+			compatible = "mediatek,mt2701-pctl-a-syscfg", "syscon";
+			reg = <0 0x10005000 0 0x1000>;
+		};
+
 		pio: pinctrl@1000b000 {
 			compatible = "mediatek,mt8127-pinctrl";
 			reg = <0 0x1000B000 0 0x1000>;
+			mediatek,pctl-regmap = <&syscfg_pctl_a>;
 			gpio-controller;
 			#gpio-cells = <2>;
 			interrupt-controller;
 			#interrupt-cells = <2>;
+			interrupts = <GIC_SPI 113 IRQ_TYPE_LEVEL_HIGH>;
 		};
 	};
 };
