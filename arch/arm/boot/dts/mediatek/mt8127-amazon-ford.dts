@@ -140,13 +140,11 @@
 		vmmc-supply = <&reg_3p3v>;
 		vqmmc-supply = <&reg_1p8v>;
 		clocks = <&pericfg CLK_PERI_MSDC30_0>,
-		<&topckgen CLK_TOP_MSDC30_0_SEL>;
+		<&pericfg CLK_PERI_MSDC50_3>;
 		clock-names = "source", "hclk";
 		pinctrl-names = "default", "state_uhs";
 		pinctrl-0 = <&mmc0_pins_default>;
 		pinctrl-1 = <&mmc0_pins_uhs>;
-		bus-width = <8>;
-		no-mmc-hs400;
 	};
 
 	memory {
