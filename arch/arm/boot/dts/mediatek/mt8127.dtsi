@@ -106,6 +106,18 @@
 		#reset-cells = <1>;
 	};
 
+	g3dsys: syscon@13000000 {
+		compatible = "mediatek,mt2701-g3dsys", "syscon";
+		reg = <0 0x13000000 0 0x1000>;
+		#clock-cells = <1>;
+	};
+
+	mmsys: syscon@14000000 {
+		compatible = "mediatek,mt2701-mmsys", "syscon";
+		reg = <0 0x14000000 0 0x1000>;
+		#clock-cells = <1>;
+	};
+
 	timer {
 		compatible = "arm,armv7-timer";
 		interrupt-parent = <&gic>;
