@@ -111,6 +111,8 @@
 
 			touchscreen-size-x = <1024>;
 			touchscreen-size-y = <600>;
+
+			report-rate-hz = <120>;
 		};
 	};
 
