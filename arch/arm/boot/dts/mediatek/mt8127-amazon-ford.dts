@@ -134,13 +134,13 @@
 		clock-names = "main", "mm";
 	};
 
-	dpi0: dpi@14014000 {
+	dpi0: dpi@1400d000 {
 		compatible = "mediatek,mt8127-dpi",
 		"mediatek,mt2701-dpi";
-		reg = <0 0x14014000 0 0x1000>;
+		reg = <0 0x1400d000 0 0x1000>;
 		interrupts = <GIC_SPI 158 IRQ_TYPE_LEVEL_LOW>;
-		clocks = <&mmsys CLK_MM_DPI1_DIGL>,
-		<&mmsys CLK_MM_DPI1_ENGINE>,
+		clocks = <&mmsys CLK_MM_DPI_DIGL>,
+		<&mmsys CLK_MM_DPI_ENGINE>,
 		<&apmixedsys CLK_APMIXED_TVDPLL>;
 		clock-names = "pixel", "engine", "pll";
 	};
