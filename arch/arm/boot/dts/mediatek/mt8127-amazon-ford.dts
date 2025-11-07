@@ -108,8 +108,8 @@
 	};
 
 	color: color@1400b000 {
-		compatible = "mediatek,mt8127-disp-mutex",
-		"mediatek,mt2701-disp-mutex";
+		compatible = "mediatek,mt8127-disp-color",
+		"mediatek,mt2701-disp-color";
 		reg = <0 0x1400b000 0 0x1000>;
 		interrupts = <GIC_SPI 156 IRQ_TYPE_LEVEL_LOW>;
 		clocks = <&mmsys CLK_MM_DISP_COLOR>;
