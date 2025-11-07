@@ -57,6 +57,7 @@
 		"pp";
 		clocks = <&mmsys CLK_MM_SMI_COMMON>, <&g3dsys CLK_G3DSYS_CORE>;
 		clock-names = "bus", "core";
+		resets = <&g3dsys MT2701_G3DSYS_CORE_RST>;
 	};
 
 	usb@11200000 {
@@ -101,7 +102,6 @@
 		clocks = <&pericfg CLK_PERI_I2C0>, <&pericfg CLK_PERI_AP_DMA>;
 		clock-names = "main", "dma";
 		clock-div = <16>;
-		clock-frequency = <400000>;
 
 		#address-cells = <1>;
 		#size-cells = <0>;
@@ -114,7 +114,6 @@
 		clocks = <&pericfg CLK_PERI_I2C1>, <&pericfg CLK_PERI_AP_DMA>;
 		clock-names = "main", "dma";
 		clock-div = <16>;
-		clock-frequency = <400000>;
 
 		#address-cells = <1>;
 		#size-cells = <0>;
