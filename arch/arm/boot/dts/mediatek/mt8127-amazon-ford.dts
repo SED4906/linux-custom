@@ -98,7 +98,6 @@
 		clocks = <&pericfg CLK_PERI_I2C2>, <&pericfg CLK_PERI_AP_DMA>;
 		clock-names = "main", "dma";
 		clock-div = <16>;
-		clock-frequency = <400000>;
 
 		#address-cells = <1>;
 		#size-cells = <0>;
