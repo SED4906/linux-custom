@@ -75,7 +75,7 @@
 #define EDT_RAW_DATA_DELAY		1000 /* usec */
 
 #define EDT_DEFAULT_NUM_X		1024
-#define EDT_DEFAULT_NUM_Y		1024
+#define EDT_DEFAULT_NUM_Y		600
 
 #define M06_REG_CMD(factory) ((factory) ? 0xf3 : 0xfc)
 #define M06_REG_ADDR(factory, addr) ((factory) ? (addr) & 0x7f : (addr) & 0x3f)
