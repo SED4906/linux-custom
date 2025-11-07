@@ -9,6 +9,7 @@
 #include "mt8127.dtsi"
 #include <dt-bindings/phy/phy.h>
 #include "mt8127-pinfunc.h"
+#include <dt-bindings/memory/mt2701-larb-port.h>
 
 / {
 	model = "MediaTek MT8127 Amazon Fire 7 (ford, 2015)";
@@ -111,7 +112,7 @@
 		"mediatek,mt2701-disp-mutex";
 		reg = <0 0x1400b000 0 0x1000>;
 		interrupts = <GIC_SPI 156 IRQ_TYPE_LEVEL_LOW>;
-		clocks = <&mmsys CLK_MM_DISP_COLOR0>;
+		clocks = <&mmsys CLK_MM_DISP_COLOR>;
 		power-domains = <&scpsys MT2701_POWER_DOMAIN_DISP>;
 	};
 

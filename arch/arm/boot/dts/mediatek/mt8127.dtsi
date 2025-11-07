@@ -123,6 +123,35 @@
 		#reset-cells = <1>;
 	};
 
+	scpsys: power-controller@10006000 {
+		compatible = "mediatek,mt8127-scpsys",
+		"mediatek,mt2701-scpsys",
+		"syscon";
+		#power-domain-cells = <1>;
+		reg = <0 0x10006000 0 0x1000>;
+		infracfg = <&infracfg>;
+		clocks = <&topckgen CLK_TOP_MM_SEL>,
+		<&topckgen CLK_TOP_MFG_SEL>,
+		<&topckgen CLK_TOP_ETHIF_SEL>;
+		clock-names = "mm", "mfg", "ethif";
+	};
+
+	imgsys: syscon@15000000 {
+		compatible = "mediatek,mt8127-imgsys",
+		"mediatek,mt2701-imgsys",
+		"syscon";
+		reg = <0 0x15000000 0 0x1000>;
+		#clock-cells = <1>;
+	};
+
+	vdecsys: syscon@16000000 {
+		compatible = "mediatek,mt8127-vdecsys",
+		"mediatek,mt2701-vdecsys",
+		"syscon";
+		reg = <0 0x16000000 0 0x1000>;
+		#clock-cells = <1>;
+	};
+
 	timer {
 		compatible = "arm,armv7-timer";
 		interrupt-parent = <&gic>;
