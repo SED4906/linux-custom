@@ -32,7 +32,7 @@
 
 	mali: gpu@13040000 {
 		compatible = "arm,mali-450";
-		reg = <0 0x13040000 0 0x10000>;
+		reg = <0 0x13040000 0 0x30000>;
 		interrupts = <GIC_SPI 170 IRQ_TYPE_LEVEL_LOW>,
 		<GIC_SPI 171 IRQ_TYPE_LEVEL_LOW>,
 		<GIC_SPI 172 IRQ_TYPE_LEVEL_LOW>,
@@ -55,7 +55,7 @@
 		"pp3",
 		"ppmmu3",
 		"pp";
-		clocks = <&mmsys CLK_MM_SMI_COMMON>, <&g3dsys CLK_G3DSYS_CORE>;
+		clocks = <&topckgen CLK_TOP_MMPLL>, <&g3dsys CLK_G3DSYS_CORE>;
 		clock-names = "bus", "core";
 		resets = <&g3dsys MT2701_G3DSYS_CORE_RST>;
 	};
