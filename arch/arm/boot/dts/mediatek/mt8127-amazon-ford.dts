@@ -134,6 +134,30 @@
 		clock-names = "main", "mm";
 	};
 
+	dsi: dsi@1400c000 {
+		compatible = "mediatek,mt8127-dsi",
+		"mediatek,mt2701-dsi";
+		reg = <0 0x1400c000 0 0x1000>;
+		interrupts = <GIC_SPI 157 IRQ_TYPE_LEVEL_LOW>;
+		clocks = <&mmsys CLK_MM_DSI_ENGINE>,
+		<&mmsys CLK_MM_DSI_DIG>,
+		<&mipi_tx0>;
+		clock-names = "engine", "digital", "hs";
+		phys = <&mipi_tx0>;
+		phy-names = "dphy";
+		status = "disabled";
+	};
+
+	mipi_tx0: dsi-phy@10010000 {
+		compatible = "mediatek,mt8127-mipi-tx",
+		"mediatek,mt2701-mipi-tx";
+		reg = <0 0x10010000 0 0x90>;
+		clocks = <&clk26m>;
+		clock-output-names = "mipi_tx0_pll";
+		#clock-cells = <0>;
+		#phy-cells = <0>;
+	};
+
 	dpi0: dpi@1400d000 {
 		compatible = "mediatek,mt8127-dpi",
 		"mediatek,mt2701-dpi";

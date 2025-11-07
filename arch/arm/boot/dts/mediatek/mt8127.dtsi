@@ -79,6 +79,12 @@
 			clock-frequency = <26000000>;
 			#clock-cells = <0>;
                 };
+
+		clk26m: dummy26m2 {
+			compatible = "fixed-clock";
+			clock-frequency = <26000000>;
+			#clock-cells = <0>;
+		};
 	};
 
 	pericfg: syscon@10003000 {
