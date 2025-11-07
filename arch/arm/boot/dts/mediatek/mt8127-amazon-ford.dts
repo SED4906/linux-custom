@@ -124,6 +124,27 @@
 		clocks = <&mmsys CLK_MM_MUTEX_32K>;
 	};
 
+	bls: pwm@1400a000 {
+		compatible = "mediatek,mt8127-disp-pwm",
+		"mediatek,mt2701-disp-pwm";
+		reg = <0 0x1400a000 0 0x1000>;
+		#pwm-cells = <2>;
+		clocks = <&mmsys CLK_MM_MDP_BLS_26M>,
+		<&mmsys CLK_MM_DISP_BLS>;
+		clock-names = "main", "mm";
+	};
+
+	dpi0: dpi@14014000 {
+		compatible = "mediatek,mt8127-dpi",
+		"mediatek,mt2701-dpi";
+		reg = <0 0x14014000 0 0x1000>;
+		interrupts = <GIC_SPI 158 IRQ_TYPE_LEVEL_LOW>;
+		clocks = <&mmsys CLK_MM_DPI1_DIGL>,
+		<&mmsys CLK_MM_DPI1_ENGINE>,
+		<&apmixedsys CLK_APMIXED_TVDPLL>;
+		clock-names = "pixel", "engine", "pll";
+	};
+
 	mali: gpu@13040000 {
 		compatible = "arm,mali-450";
 		reg = <0 0x13040000 0 0x30000>;
