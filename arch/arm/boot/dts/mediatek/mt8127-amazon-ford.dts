@@ -30,6 +30,14 @@
 		};
 	};
 
+	mutex: mutex@1400e000 {
+		compatible = "mediatek,mt8127-disp-mutex",
+		"mediatek,mt2701-disp-mutex";
+		reg = <0 0x1400e000 0 0x1000>;
+		interrupts = <GIC_SPI 161 IRQ_TYPE_LEVEL_LOW>;
+		clocks = <&mmsys CLK_MM_MUTEX_32K>;
+	};
+
 	mali: gpu@13040000 {
 		compatible = "arm,mali-450";
 		reg = <0 0x13040000 0 0x30000>;
