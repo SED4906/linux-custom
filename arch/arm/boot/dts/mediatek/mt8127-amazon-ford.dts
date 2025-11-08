@@ -215,6 +215,7 @@
 		connector {
 			compatible = "usb-b-connector";
 			type = "micro";
+			vbus-supply = <&mt6323_vusb_reg>;
 		};
 	};
 
