@@ -278,6 +278,7 @@
 			interrupts = <7 IRQ_TYPE_EDGE_FALLING>;
 
 			vcc-supply = <&mt6397_vgp2_reg>;
+			iovcc-supply = <&mt6397_vgp2_reg>;
 
 			touchscreen-size-x = <1024>;
 			touchscreen-size-y = <600>;
@@ -419,6 +420,7 @@
 					regulator-min-microvolt = <1800000>;
 					regulator-max-microvolt = <3300000>;
 					regulator-enable-ramp-delay = <36>;
+					regulator-always-on;
 					regulator-boot-on;
 				};
 
@@ -427,6 +429,7 @@
 					regulator-min-microvolt = <3000000>;
 					regulator-max-microvolt = <3300000>;
 					regulator-enable-ramp-delay = <36>;
+					regulator-always-on;
 					regulator-boot-on;
 				};
 
@@ -435,6 +438,7 @@
 					regulator-min-microvolt = <3000000>;
 					regulator-max-microvolt = <3300000>;
 					regulator-enable-ramp-delay = <36>;
+					regulator-always-on;
 					regulator-boot-on;
 				};
 
