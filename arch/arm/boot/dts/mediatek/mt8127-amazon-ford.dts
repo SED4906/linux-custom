@@ -581,8 +581,8 @@
 		compatible = "mediatek,mt2701-mmc";
 		reg = <0 0x11230000 0 0x1000>;
 		interrupts = <GIC_SPI 39 IRQ_TYPE_LEVEL_LOW>;
-		vmmc-supply = <&reg_3p3v>;
-		vqmmc-supply = <&reg_1p8v>;
+		vmmc-supply = <&mt6323_vemc3v3_reg>;
+		vqmmc-supply = <&mt6323_vio18_reg>;
 		clocks = <&pericfg CLK_PERI_MSDC30_0>,
 		<&pericfg CLK_PERI_MSDC50_3>;
 		clock-names = "source", "hclk";
