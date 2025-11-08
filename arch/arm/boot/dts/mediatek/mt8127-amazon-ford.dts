@@ -195,6 +195,7 @@
 		"pp";
 		clocks = <&topckgen CLK_TOP_MMPLL>, <&g3dsys CLK_G3DSYS_CORE>;
 		clock-names = "bus", "core";
+		power-domains = <&scpsys MT2701_POWER_DOMAIN_MFG>;
 		resets = <&g3dsys MT2701_G3DSYS_CORE_RST>;
 	};
 
