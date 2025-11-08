@@ -145,7 +145,6 @@
 		clock-names = "engine", "digital", "hs";
 		phys = <&mipi_tx0>;
 		phy-names = "dphy";
-		status = "disabled";
 	};
 
 	mipi_tx0: dsi-phy@10010000 {
