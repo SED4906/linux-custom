@@ -278,7 +278,6 @@
 			interrupts = <7 IRQ_TYPE_EDGE_FALLING>;
 
 			reset-gpios = <&pio 45 GPIO_ACTIVE_HIGH>;
-			wake-gpios = <&pio 29 GPIO_ACTIVE_HIGH>;
 
 			touchscreen-size-x = <1024>;
 			touchscreen-size-y = <600>;
