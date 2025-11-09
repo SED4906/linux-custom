@@ -236,7 +236,7 @@
 	};
 
 	i2c0: i2c@11007000 {
-		compatible = "mediatek,mt6577-i2c";
+		compatible = "mediatek,mt8127-i2c";
 		reg = <0 0x11007000 0 0x70>, <0 0x11000200 0 0x80>;
 		interrupts = <GIC_SPI 44 IRQ_TYPE_LEVEL_LOW>;
 		clocks = <&pericfg CLK_PERI_I2C0>, <&pericfg CLK_PERI_AP_DMA>;
@@ -248,7 +248,7 @@
 	};
 
 	i2c1: i2c@11008000 {
-		compatible = "mediatek,mt6577-i2c";
+		compatible = "mediatek,mt8127-i2c";
 		reg = <0 0x11008000 0 0x70>, <0 0x11000280 0 0x80>;
 		interrupts = <GIC_SPI 45 IRQ_TYPE_LEVEL_LOW>;
 		clocks = <&pericfg CLK_PERI_I2C1>, <&pericfg CLK_PERI_AP_DMA>;
@@ -260,7 +260,7 @@
 	};
 
 	i2c2: i2c@11009000 {
-		compatible = "mediatek,mt6577-i2c";
+		compatible = "mediatek,mt8127-i2c";
 		reg = <0 0x11009000 0 0x70>, <0 0x11000300 0 0x80>;
 		interrupts = <GIC_SPI 46 IRQ_TYPE_LEVEL_LOW>;
 		clocks = <&pericfg CLK_PERI_I2C2>, <&pericfg CLK_PERI_AP_DMA>;

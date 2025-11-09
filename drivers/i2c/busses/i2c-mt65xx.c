@@ -367,7 +367,7 @@ static const struct i2c_adapter_quirks mt8127_i2c_quirks = {
 	.max_write_len = 255,
 	.max_read_len = 255,
 	.max_comb_1st_msg_len = 255,
-	.max_comb_2nd_msg_len = 252,
+	.max_comb_2nd_msg_len = 33,
 };
 
 static const struct mtk_i2c_compatible mt2712_compat = {
@@ -394,7 +394,7 @@ static const struct mtk_i2c_compatible mt8127_compat = {
 	.dma_sync = 0,
 	.ltiming_adjust = 0,
 	.apdma_sync = 0,
-	.max_dma_support = 33,
+	.max_dma_support = 32,
 };
 
 static const struct mtk_i2c_compatible mt6577_compat = {
