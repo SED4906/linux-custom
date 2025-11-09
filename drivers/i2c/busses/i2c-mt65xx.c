@@ -1221,7 +1221,11 @@ static int mtk_i2c_do_transfer(struct mtk_i2c *i2c, struct i2c_msg *msgs,
 	}
 
 	if (!i2c->use_dma && i2c->op == I2C_MASTER_WR) {
-
+		u8 *ptr = msgs->buf;
+		u16 msg_len = msgs->len;
+		while(msg_len--) {
+			writel(*ptr++, i2c->base + i2c->dev_comp->regs[OFFSET_DATA_PORT]);
+		}
 	}
 
 	mtk_i2c_writew(i2c, start_reg, OFFSET_START);
@@ -1230,7 +1234,7 @@ static int mtk_i2c_do_transfer(struct mtk_i2c *i2c, struct i2c_msg *msgs,
 		u8 *ptr = msgs->buf;
 		u16 msg_len = msgs->len;
 		while(msg_len--) {
-			writel(*ptr++, i2c->base + i2c->dev_comp->regs[OFFSET_DATA_PORT]);
+			*ptr++ = readl(i2c->base + i2c->dev_comp->regs[OFFSET_DATA_PORT]);
 		}
 	}
 
