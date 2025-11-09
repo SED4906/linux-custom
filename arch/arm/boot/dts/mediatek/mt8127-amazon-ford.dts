@@ -277,7 +277,7 @@
 			interrupt-parent = <&pio>;
 			interrupts = <7 IRQ_TYPE_EDGE_FALLING>;
 
-			reset-gpios = <&pio 45 GPIO_ACTIVE_HIGH>;
+			reset-gpios = <&pio 45 GPIO_ACTIVE_LOW>;
 
 			touchscreen-size-x = <1024>;
 			touchscreen-size-y = <600>;
