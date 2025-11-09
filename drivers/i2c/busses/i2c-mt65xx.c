@@ -394,7 +394,7 @@ static const struct mtk_i2c_compatible mt8127_compat = {
 	.dma_sync = 0,
 	.ltiming_adjust = 0,
 	.apdma_sync = 0,
-	.max_dma_support = 32,
+	.max_dma_support = 33,
 };
 
 static const struct mtk_i2c_compatible mt6577_compat = {
