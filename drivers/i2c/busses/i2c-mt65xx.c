@@ -361,6 +361,15 @@ static const struct i2c_adapter_quirks mt8183_i2c_quirks = {
 	.flags = I2C_AQ_NO_ZERO_LEN,
 };
 
+static const struct i2c_adapter_quirks mt8127_i2c_quirks = {
+	.flags = I2C_AQ_COMB_WRITE_THEN_READ,
+	.max_num_msgs = 1,
+	.max_write_len = 255,
+	.max_read_len = 255,
+	.max_comb_1st_msg_len = 255,
+	.max_comb_2nd_msg_len = 252,
+};
+
 static const struct mtk_i2c_compatible mt2712_compat = {
 	.regs = mt_i2c_regs_v1,
 	.pmic_i2c = 0,
@@ -375,6 +384,7 @@ static const struct mtk_i2c_compatible mt2712_compat = {
 };
 
 static const struct mtk_i2c_compatible mt8127_compat = {
+	.quirks = &mt8127_i2c_quirks,
 	.regs = mt_i2c_regs_v1,
 	.pmic_i2c = 0,
 	.dcm = 1,
@@ -384,7 +394,7 @@ static const struct mtk_i2c_compatible mt8127_compat = {
 	.dma_sync = 0,
 	.ltiming_adjust = 0,
 	.apdma_sync = 0,
-	.max_dma_support = 33,
+	.max_dma_support = 32,
 };
 
 static const struct mtk_i2c_compatible mt6577_compat = {
