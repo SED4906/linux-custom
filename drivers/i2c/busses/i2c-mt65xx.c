@@ -368,7 +368,7 @@ static const struct i2c_adapter_quirks mt8127_i2c_quirks = {
 	.max_write_len = 255,
 	.max_read_len = 255,
 	.max_comb_1st_msg_len = 255,
-	.max_comb_2nd_msg_len = 33,
+	.max_comb_2nd_msg_len = 252,
 };
 
 static const struct mtk_i2c_compatible mt2712_compat = {
@@ -1220,7 +1220,7 @@ static int mtk_i2c_do_transfer(struct mtk_i2c *i2c, struct i2c_msg *msgs,
 			start_reg |= I2C_RS_MUL_CNFG;
 	}
 
-	if (!i2c->use_dma && i2c->op == I2C_MASTER_WR) {
+	if (!i2c->use_dma && i2c->op != I2C_MASTER_RD) {
 		u8 *ptr = msgs->buf;
 		u16 msg_len = msgs->len;
 		while(msg_len--) {
