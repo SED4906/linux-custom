@@ -312,6 +312,8 @@ static irqreturn_t edt_ft5x06_ts_isr(int irq, void *dev_id)
 		goto out;
 	}
 
+	dev_dbg(dev, "%02x%02x%02x\n", rdbuf[0], rdbuf[1], rdbuf[2]);
+
 	for (i = 0; i < tsdata->max_support_points; i++) {
 		u8 *buf = &rdbuf[i * tsdata->point_len + tsdata->tdata_offset];
 
@@ -331,6 +333,8 @@ static irqreturn_t edt_ft5x06_ts_isr(int irq, void *dev_id)
 			swap(x, y);
 
 		id = (buf[2] >> 4) & 0x0f;
+
+		dev_dbg(dev, "type: %d x: %d y: %d id: %d\n", type, x, y, id);
 
 		input_mt_slot(tsdata->input, id);
 		if (input_mt_report_slot_state(tsdata->input, MT_TOOL_FINGER,
@@ -1269,6 +1273,7 @@ static int edt_ft5x06_ts_probe(struct i2c_client *client)
 	tsdata->factory_mode = false;
 	i2c_set_clientdata(client, tsdata);
 
+	dev_dbg(&client->dev, "indentifying touchscreen\n");
 	error = edt_ft5x06_ts_identify(client, tsdata);
 	if (error) {
 		dev_err(&client->dev, "touchscreen probe failed\n");
@@ -1279,11 +1284,16 @@ static int edt_ft5x06_ts_probe(struct i2c_client *client)
 	 * Dummy read access. EP0700MLP1 returns bogus data on the first
 	 * register read access and ignores writes.
 	 */
+	dev_dbg(&client->dev, "doing dummy read\n");
 	regmap_read(tsdata->regmap, 0x00, &val);
 
+	dev_dbg(&client->dev, "edt_ft5x06_ts_set_tdata_parameters\n");
 	edt_ft5x06_ts_set_tdata_parameters(tsdata);
+	dev_dbg(&client->dev, "edt_ft5x06_ts_set_regs\n");
 	edt_ft5x06_ts_set_regs(tsdata);
+	dev_dbg(&client->dev, "edt_ft5x06_ts_get_defaults\n");
 	edt_ft5x06_ts_get_defaults(&client->dev, tsdata);
+	dev_dbg(&client->dev, "edt_ft5x06_ts_get_parameters\n");
 	edt_ft5x06_ts_get_parameters(tsdata);
 
 	if (tsdata->reg_addr.reg_report_rate != NO_REGISTER &&
@@ -1472,7 +1482,7 @@ static DEFINE_SIMPLE_DEV_PM_OPS(edt_ft5x06_ts_pm_ops,
 				edt_ft5x06_ts_suspend, edt_ft5x06_ts_resume);
 
 static const struct edt_i2c_chip_data edt_ft5x06_data = {
-	.max_support_points = 4,
+	.max_support_points = 5,
 };
 
 static const struct edt_i2c_chip_data edt_ft5452_data = {
