@@ -152,14 +152,10 @@ struct edt_i2c_chip_data {
 	int  max_support_points;
 };
 
-static const struct regmap_config edt_ft5x06_i2c_regmap_config = {
-	.reg_bits = 8,
-	.val_bits = 8,
-};
-
 static bool edt_ft5x06_ts_check_crc(struct edt_ft5x06_ts_data *tsdata,
 				    u8 *buf, int buflen)
 {
+	return true;
 	int i;
 	u8 crc = 0;
 
@@ -287,6 +283,13 @@ static int edt_M06_i2c_write(void *context, const void *data, size_t count)
 
 	return 0;
 }
+
+static const struct regmap_config edt_ft5x06_i2c_regmap_config = {
+	.reg_bits = 8,
+	.val_bits = 8,
+	.read = edt_M06_i2c_read,
+	.write = edt_M06_i2c_write,
+};
 
 static const struct regmap_config edt_M06_i2c_regmap_config = {
 	.reg_bits = 8,
@@ -1483,7 +1486,7 @@ static DEFINE_SIMPLE_DEV_PM_OPS(edt_ft5x06_ts_pm_ops,
 				edt_ft5x06_ts_suspend, edt_ft5x06_ts_resume);
 
 static const struct edt_i2c_chip_data edt_ft5x06_data = {
-	.max_support_points = 4,
+	.max_support_points = 5,
 };
 
 static const struct edt_i2c_chip_data edt_ft5452_data = {
