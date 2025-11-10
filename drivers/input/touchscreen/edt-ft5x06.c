@@ -1483,7 +1483,7 @@ static DEFINE_SIMPLE_DEV_PM_OPS(edt_ft5x06_ts_pm_ops,
 				edt_ft5x06_ts_suspend, edt_ft5x06_ts_resume);
 
 static const struct edt_i2c_chip_data edt_ft5x06_data = {
-	.max_support_points = 5,
+	.max_support_points = 4,
 };
 
 static const struct edt_i2c_chip_data edt_ft5452_data = {
