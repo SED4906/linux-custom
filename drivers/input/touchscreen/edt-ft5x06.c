@@ -1256,7 +1256,6 @@ static int edt_ft5x06_ts_probe(struct i2c_client *client)
 	}
 
 	if (tsdata->reset_gpio) {
-		gpiod_set_value_cansleep(tsdata->reset_gpio, 1);
 		usleep_range(5000, 6000);
 		gpiod_set_value_cansleep(tsdata->reset_gpio, 0);
 		msleep(300);

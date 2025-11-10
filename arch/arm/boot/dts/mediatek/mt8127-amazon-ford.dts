@@ -282,7 +282,7 @@
 			interrupt-parent = <&pio>;
 			interrupts = <7 IRQ_TYPE_EDGE_FALLING>;
 
-			reset-gpios = <&pio 45 GPIO_ACTIVE_HIGH>;
+			reset-gpios = <&pio 45 GPIO_ACTIVE_LOW>;
 
 			touchscreen-size-x = <1024>;
 			touchscreen-size-y = <600>;
@@ -436,7 +436,7 @@
 
 				mt6397_vgp2_reg: ldo_vgp2 {
 					regulator-name = "vcamio";
-					regulator-min-microvolt = <1000000>;
+					regulator-min-microvolt = <3000000>;
 					regulator-max-microvolt = <3300000>;
 					regulator-enable-ramp-delay = <218>;
 				};
