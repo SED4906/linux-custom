@@ -13,7 +13,7 @@
  * Development of this driver has been sponsored by Glyn:
  *    http://www.glyn.com/Products/Displays
  */
-
+#define DEBUG
 #include <linux/debugfs.h>
 #include <linux/delay.h>
 #include <linux/gpio/consumer.h>

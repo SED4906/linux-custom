@@ -3,7 +3,7 @@
  * Copyright (c) 2014 MediaTek Inc.
  * Author: Xudong Chen <xudong.chen@mediatek.com>
  */
-
+#define DEBUG
 #include <linux/clk.h>
 #include <linux/completion.h>
 #include <linux/delay.h>
