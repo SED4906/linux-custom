@@ -243,7 +243,6 @@
 		clocks = <&pericfg CLK_PERI_I2C0>, <&pericfg CLK_PERI_AP_DMA>;
 		clock-names = "main", "dma";
 		clock-div = <16>;
-		mediatek,have-pmic;
 		mediatek,use-dma;
 
 		#address-cells = <1>;
@@ -257,7 +256,6 @@
 		clocks = <&pericfg CLK_PERI_I2C1>, <&pericfg CLK_PERI_AP_DMA>;
 		clock-names = "main", "dma";
 		clock-div = <16>;
-		mediatek,have-pmic;
 		mediatek,use-dma;
 
 		#address-cells = <1>;
@@ -271,7 +269,6 @@
 		clocks = <&pericfg CLK_PERI_I2C2>, <&pericfg CLK_PERI_AP_DMA>;
 		clock-names = "main", "dma";
 		clock-div = <16>;
-		mediatek,have-pmic;
 		mediatek,use-dma;
 
 		#address-cells = <1>;
@@ -310,6 +307,10 @@
 
 		pmic: mt6397 {
 			compatible = "mediatek,mt6397";
+			interrupt-parent = <&pio>;
+			interrupts = <150 IRQ_TYPE_LEVEL_HIGH>;
+			interrupt-controller;
+			#interrupt-cells = <2>;
 
 			mt6397regulator: mt6397regulator {
 				compatible = "mediatek,mt6397-regulator";
