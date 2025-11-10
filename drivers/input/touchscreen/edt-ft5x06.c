@@ -283,77 +283,9 @@ static int edt_M06_i2c_write(void *context, const void *data, size_t count)
 	return 0;
 }
 
-
-static int edt_5436i_i2c_read(void *context, const void *reg_buf, size_t reg_size,
-			    void *val_buf, size_t val_size)
-{
-	struct device *dev = context;
-	struct i2c_client *i2c = to_i2c_client(dev);
-	struct edt_ft5x06_ts_data *tsdata = i2c_get_clientdata(i2c);
-	struct i2c_msg xfer[2];
-	u8 addr;
-	int ret;
-
-	addr = *((u8 *)reg_buf);
-
-	xfer[0].addr  = i2c->addr;
-	xfer[0].flags = 0;
-	xfer[0].len = 1;
-	xfer[0].buf = &addr;
-
-	xfer[1].addr = i2c->addr;
-	xfer[1].flags = I2C_M_RD;
-	xfer[1].len = val_size;
-	xfer[1].buf = val_buf;
-
-	ret = i2c_transfer(i2c->adapter, xfer, 2);
-	if (ret != 2) {
-		if (ret < 0)
-			return ret;
-
-		return -EIO;
-	}
-
-	return 0;
-}
-
-static int edt_5436i_i2c_write(void *context, const void *data, size_t count)
-{
-	struct device *dev = context;
-	struct i2c_client *i2c = to_i2c_client(dev);
-	struct edt_ft5x06_ts_data *tsdata = i2c_get_clientdata(i2c);
-	u8 addr, val;
-	u8 wbuf[2];
-	struct i2c_msg xfer;
-	int ret;
-
-	addr = *((u8 *)data);
-	val = *((u8 *)data + 1);
-
-	wbuf[0] = addr;
-	wbuf[1] = val;
-
-	xfer.addr  = i2c->addr;
-	xfer.flags = 0;
-	xfer.len = 2;
-	xfer.buf = wbuf;
-
-	ret = i2c_transfer(i2c->adapter, &xfer, 1);
-	if (ret != 1) {
-		if (ret < 0)
-			return ret;
-
-		return -EIO;
-	}
-
-	return 0;
-}
-
 static const struct regmap_config edt_ft5x06_i2c_regmap_config = {
 	.reg_bits = 8,
 	.val_bits = 8,
-	.read = edt_5436i_i2c_read,
-	.write = edt_5436i_i2c_write,
 };
 
 static const struct regmap_config edt_M06_i2c_regmap_config = {
@@ -1324,6 +1256,7 @@ static int edt_ft5x06_ts_probe(struct i2c_client *client)
 	}
 
 	if (tsdata->reset_gpio) {
+		gpiod_set_value_cansleep(tsdata->reset_gpio, 1);
 		usleep_range(5000, 6000);
 		gpiod_set_value_cansleep(tsdata->reset_gpio, 0);
 		msleep(300);
