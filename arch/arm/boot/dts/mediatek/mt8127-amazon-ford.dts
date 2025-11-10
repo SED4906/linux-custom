@@ -263,7 +263,7 @@
 	};
 
 	i2c2: i2c@11009000 {
-		compatible = "mediatek,mt8127-i2c";
+		compatible = "mediatek,mt6577-i2c";
 		reg = <0 0x11009000 0 0x70>, <0 0x11000300 0 0x80>;
 		interrupts = <GIC_SPI 46 IRQ_TYPE_LEVEL_LOW>;
 		clocks = <&pericfg CLK_PERI_I2C2>, <&pericfg CLK_PERI_AP_DMA>;
