@@ -292,7 +292,6 @@ static int edt_5436i_i2c_read(void *context, const void *reg_buf, size_t reg_siz
 	struct edt_ft5x06_ts_data *tsdata = i2c_get_clientdata(i2c);
 	struct i2c_msg xfer[2];
 	u8 addr;
-	u8 rbuf;
 	int ret;
 
 	addr = *((u8 *)reg_buf);
@@ -304,8 +303,8 @@ static int edt_5436i_i2c_read(void *context, const void *reg_buf, size_t reg_siz
 
 	xfer[1].addr = i2c->addr;
 	xfer[1].flags = I2C_M_RD;
-	xfer[1].len = 1;
-	xfer[1].buf = &rbuf;
+	xfer[1].len = val_size;
+	xfer[1].buf = val_buf;
 
 	ret = i2c_transfer(i2c->adapter, xfer, 2);
 	if (ret != 2) {
@@ -314,9 +313,6 @@ static int edt_5436i_i2c_read(void *context, const void *reg_buf, size_t reg_siz
 
 		return -EIO;
 	}
-
-
-	*((u8 *)val_buf) = rbuf;
 
 	return 0;
 }
