@@ -1267,6 +1267,7 @@ static int edt_ft5x06_ts_probe(struct i2c_client *client)
 		return -ENOMEM;
 	}
 
+	dev_dbg(&client->dev, "mutex_init\n");
 	mutex_init(&tsdata->mutex);
 	tsdata->client = client;
 	tsdata->input = input;
