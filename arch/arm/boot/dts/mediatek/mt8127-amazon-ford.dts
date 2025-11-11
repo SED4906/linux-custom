@@ -580,7 +580,6 @@
 		pin-i2c2 {
 			pinmux = <MT8127_PIN_31_EINT9__FUNC_SDA2>,
 			<MT8127_PIN_32_EINT10__FUNC_SCL2>;
-			bias-disable;
 		};
 	};
 };
