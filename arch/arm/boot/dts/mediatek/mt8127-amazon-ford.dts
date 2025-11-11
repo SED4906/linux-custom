@@ -270,7 +270,6 @@
 		clocks = <&pericfg CLK_PERI_I2C2>, <&pericfg CLK_PERI_AP_DMA>;
 		clock-names = "main", "dma";
 		clock-div = <16>;
-		mediatek,use-dma;
 
 		#address-cells = <1>;
 		#size-cells = <0>;
