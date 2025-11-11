@@ -270,6 +270,10 @@
 		clocks = <&pericfg CLK_PERI_I2C2>, <&pericfg CLK_PERI_AP_DMA>;
 		clock-names = "main", "dma";
 		clock-div = <16>;
+		mediatek,use-dma;
+
+		pinctrl-names = "default";
+		pinctrl-0 = <&i2c2_pins>;
 
 		#address-cells = <1>;
 		#size-cells = <0>;
@@ -569,6 +573,14 @@
 		pins-rst {
 			pinmux = <MT8127_PIN_131_MSDC0_RSTB__FUNC_MSDC0_RSTB>;
 			bias-pull-up;
+		};
+	};
+
+	i2c2_pins: i2c2 {
+		pin-i2c2 {
+			pinmux = <MT8127_PIN_31_EINT9__FUNC_SDA2>,
+			<MT8127_PIN_32_EINT10__FUNC_SCL2>;
+			bias-disable;
 		};
 	};
 };
