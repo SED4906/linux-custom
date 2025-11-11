@@ -312,6 +312,7 @@
 		<&topckgen CLK_TOP_SPI0_SEL>,
 		<&pericfg CLK_PERI_SPI0>;
 		clock-names = "parent-clk", "sel-clk", "spi-clk";
+		status = "disabled";
 	};
 
 	pwrap: pwrap@1000d000 {

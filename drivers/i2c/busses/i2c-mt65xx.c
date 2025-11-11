@@ -597,9 +597,11 @@ static void mtk_i2c_init_hw(struct mtk_i2c *i2c)
 		writel(I2C_DMA_CLR_FLAG, i2c->pdmabase + OFFSET_RST);
 		mtk_i2c_writew(i2c, I2C_CHN_CLR_FLAG, OFFSET_SOFTRESET);
 	} else {
-		writel(I2C_DMA_HARD_RST, i2c->pdmabase + OFFSET_RST);
-		udelay(50);
-		writel(I2C_DMA_CLR_FLAG, i2c->pdmabase + OFFSET_RST);
+		if(i2c->use_dma) {
+			writel(I2C_DMA_HARD_RST, i2c->pdmabase + OFFSET_RST);
+			udelay(50);
+			writel(I2C_DMA_CLR_FLAG, i2c->pdmabase + OFFSET_RST);
+		}
 		mtk_i2c_writew(i2c, I2C_SOFT_RST, OFFSET_SOFTRESET);
 	}
 
@@ -1279,6 +1281,8 @@ static int mtk_i2c_do_transfer(struct mtk_i2c *i2c, struct i2c_msg *msgs,
 		mtk_i2c_init_hw(i2c);
 		return -ENXIO;
 	}
+
+	i2c_dump_register(i2c);
 
 	return 0;
 }
