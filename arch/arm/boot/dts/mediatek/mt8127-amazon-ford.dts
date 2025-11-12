@@ -427,6 +427,10 @@
 
 				mt6397_vusb_reg: ldo_vusb {
 					regulator-name = "vusb";
+					regulator-min-microvolt = <3300000>;
+					regulator-max-microvolt = <3300000>;
+					regulator-enable-ramp-delay = <218>;
+					regulator-boot-on;
 				};
 
 				mt6397_vmc_reg: ldo_vmc {
