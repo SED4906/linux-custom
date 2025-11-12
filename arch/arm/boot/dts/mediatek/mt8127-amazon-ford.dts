@@ -217,7 +217,6 @@
 		connector {
 			compatible = "usb-b-connector";
 			type = "micro";
-			vusb-supply = <&mt6397_vusb_reg>;
 		};
 	};
 
@@ -234,7 +233,6 @@
 			clocks = <&apmixedsys CLK_APMIXED_UNIVPLL>;
 			clock-names = "ref";
 			#phy-cells = <1>;
-			vusb-supply = <&mt6397_vusb_reg>;
 		};
 	};
 
@@ -435,6 +433,7 @@
 					regulator-max-microvolt = <3300000>;
 					regulator-enable-ramp-delay = <218>;
 					regulator-boot-on;
+					regulator-always-on;
 				};
 
 				mt6397_vmc_reg: ldo_vmc {
