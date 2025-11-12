@@ -1282,6 +1282,8 @@ static int mtk_i2c_do_transfer(struct mtk_i2c *i2c, struct i2c_msg *msgs,
 		return -ENXIO;
 	}
 
+	i2c_dump_register(i2c);
+
 	return 0;
 }
 
