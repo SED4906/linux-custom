@@ -217,8 +217,6 @@
 		connector {
 			compatible = "usb-b-connector";
 			type = "micro";
-
-			vbus-supply = <&mt6397_vusb_reg>;
 		};
 	};
 
@@ -235,6 +233,8 @@
 			clocks = <&apmixedsys CLK_APMIXED_UNIVPLL>;
 			clock-names = "ref";
 			#phy-cells = <1>;
+
+			vbus-supply = <&mt6397_vusb_reg>;
 		};
 	};
 
