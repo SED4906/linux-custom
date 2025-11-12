@@ -214,13 +214,9 @@
 		dr_mode = "otg";
 		usb-role-switch;
 
-		vbus-supply = <&mt6397_vusb_reg>;
-
 		connector {
 			compatible = "usb-b-connector";
 			type = "micro";
-
-			vbus-supply = <&mt6397_vusb_reg>;
 		};
 	};
 
@@ -231,8 +227,6 @@
 		#address-cells = <2>;
 		#size-cells = <2>;
 		ranges;
-
-		vbus-supply = <&mt6397_vusb_reg>;
 
 		uport: usb-phy@11210800 {
 			reg = <0 0x11210800 0 0x0100>;
@@ -346,7 +340,7 @@
 			interrupt-controller;
 			#interrupt-cells = <2>;
 
-			mt6397regulator: mt6397regulator {
+			regulators {
 				compatible = "mediatek,mt6397-regulator";
 
 				mt6397_vpca15_reg: buck_vpca15 {
@@ -441,7 +435,6 @@
 					regulator-max-microvolt = <3300000>;
 					regulator-enable-ramp-delay = <218>;
 					regulator-boot-on;
-					regulator-always-on;
 				};
 
 				mt6397_vmc_reg: ldo_vmc {
