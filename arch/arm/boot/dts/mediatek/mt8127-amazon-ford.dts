@@ -214,9 +214,13 @@
 		dr_mode = "otg";
 		usb-role-switch;
 
+		vbus-supply = <&mt6397_vusb_reg>;
+
 		connector {
 			compatible = "usb-b-connector";
 			type = "micro";
+
+			vbus-supply = <&mt6397_vusb_reg>;
 		};
 	};
 
@@ -227,6 +231,8 @@
 		#address-cells = <2>;
 		#size-cells = <2>;
 		ranges;
+
+		vbus-supply = <&mt6397_vusb_reg>;
 
 		uport: usb-phy@11210800 {
 			reg = <0 0x11210800 0 0x0100>;
