@@ -13,6 +13,7 @@
  * Development of this driver has been sponsored by Glyn:
  *    http://www.glyn.com/Products/Displays
  */
+
 #define DEBUG
 #include <linux/debugfs.h>
 #include <linux/delay.h>
@@ -152,6 +153,11 @@ struct edt_i2c_chip_data {
 	int  max_support_points;
 };
 
+static const struct regmap_config edt_ft5x06_i2c_regmap_config = {
+	.reg_bits = 8,
+	.val_bits = 8,
+};
+
 static bool edt_ft5x06_ts_check_crc(struct edt_ft5x06_ts_data *tsdata,
 				    u8 *buf, int buflen)
 {
@@ -282,11 +288,6 @@ static int edt_M06_i2c_write(void *context, const void *data, size_t count)
 
 	return 0;
 }
-
-static const struct regmap_config edt_ft5x06_i2c_regmap_config = {
-	.reg_bits = 8,
-	.val_bits = 8,
-};
 
 static const struct regmap_config edt_M06_i2c_regmap_config = {
 	.reg_bits = 8,
@@ -1267,14 +1268,12 @@ static int edt_ft5x06_ts_probe(struct i2c_client *client)
 		return -ENOMEM;
 	}
 
-	dev_dbg(&client->dev, "mutex_init\n");
 	mutex_init(&tsdata->mutex);
 	tsdata->client = client;
 	tsdata->input = input;
 	tsdata->factory_mode = false;
 	i2c_set_clientdata(client, tsdata);
 
-	dev_dbg(&client->dev, "indentifying touchscreen\n");
 	error = edt_ft5x06_ts_identify(client, tsdata);
 	if (error) {
 		dev_err(&client->dev, "touchscreen probe failed\n");
@@ -1285,16 +1284,11 @@ static int edt_ft5x06_ts_probe(struct i2c_client *client)
 	 * Dummy read access. EP0700MLP1 returns bogus data on the first
 	 * register read access and ignores writes.
 	 */
-	dev_dbg(&client->dev, "doing dummy read\n");
 	regmap_read(tsdata->regmap, 0x00, &val);
 
-	dev_dbg(&client->dev, "edt_ft5x06_ts_set_tdata_parameters\n");
 	edt_ft5x06_ts_set_tdata_parameters(tsdata);
-	dev_dbg(&client->dev, "edt_ft5x06_ts_set_regs\n");
 	edt_ft5x06_ts_set_regs(tsdata);
-	dev_dbg(&client->dev, "edt_ft5x06_ts_get_defaults\n");
 	edt_ft5x06_ts_get_defaults(&client->dev, tsdata);
-	dev_dbg(&client->dev, "edt_ft5x06_ts_get_parameters\n");
 	edt_ft5x06_ts_get_parameters(tsdata);
 
 	if (tsdata->reg_addr.reg_report_rate != NO_REGISTER &&
