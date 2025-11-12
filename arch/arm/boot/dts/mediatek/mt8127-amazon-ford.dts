@@ -315,6 +315,9 @@
 		<&topckgen CLK_TOP_SPI0_SEL>,
 		<&pericfg CLK_PERI_SPI0>;
 		clock-names = "parent-clk", "sel-clk", "spi-clk";
+
+		pinctrl-names = "default";
+		pinctrl-0 = <&spi0_pins_a>;
 	};
 
 	pwrap: pwrap@1000d000 {
@@ -597,6 +600,15 @@
 		pin-i2c2 {
 			pinmux = <MT8127_PIN_31_EINT9__FUNC_SDA2>,
 			<MT8127_PIN_32_EINT10__FUNC_SCL2>;
+		};
+	};
+
+	spi0_pins_a: spi0-default {
+		pins-spi {
+			pinmux = <MT8127_PIN_53_SPI0_CS__FUNC_SPI0_CS>,
+			<MT8127_PIN_54_SPI0_CK__FUNC_SPI0_CK>,
+			<MT8127_PIN_55_SPI0_MI__FUNC_SPI0_MI>,
+			<MT8127_PIN_56_SPI0_MO__FUNC_SPI0_MO>;
 		};
 	};
 };
