@@ -1235,8 +1235,13 @@ static int mtk_i2c_do_transfer(struct mtk_i2c *i2c, struct i2c_msg *msgs,
 	if (!i2c->use_dma && (i2c->op == I2C_MASTER_RD || i2c->op == I2C_MASTER_WRRD)) {
 		u8 *ptr = msgs->buf;
 		u16 msg_len = msgs->len;
-		while(msg_len--) {
-			*ptr++ = readl(i2c->base + i2c->dev_comp->regs[OFFSET_DATA_PORT]);
+		u16 attempts = 0x1000;
+		while(msg_len && attempts--) {
+			u16 data_size = (mtk_i2c_readw(i2c, OFFSET_FIFO_STAT) >> 4) & 0xF;
+			msg_len -= data_size;
+			while(data_size--) {
+				*ptr++ = readl(i2c->base + i2c->dev_comp->regs[OFFSET_DATA_PORT]);
+			}
 		}
 	}
 
@@ -1281,8 +1286,6 @@ static int mtk_i2c_do_transfer(struct mtk_i2c *i2c, struct i2c_msg *msgs,
 		mtk_i2c_init_hw(i2c);
 		return -ENXIO;
 	}
-
-	i2c_dump_register(i2c);
 
 	return 0;
 }
