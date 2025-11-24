@@ -238,7 +238,7 @@
 		};
 	};
 
-	i2c0: i2c@11007000 {
+	/*i2c0: i2c@11007000 {
 		compatible = "mediatek,mt8127-i2c";
 		reg = <0 0x11007000 0 0x70>, <0 0x11000200 0 0x80>;
 		interrupts = <GIC_SPI 44 IRQ_TYPE_LEVEL_LOW>;
@@ -262,7 +262,7 @@
 
 		#address-cells = <1>;
 		#size-cells = <0>;
-	};
+	};*/
 
 	i2c2: i2c@11009000 {
 		compatible = "mediatek,mt8127-i2c";
@@ -271,7 +271,6 @@
 		clocks = <&pericfg CLK_PERI_I2C2>, <&pericfg CLK_PERI_AP_DMA>;
 		clock-names = "main", "dma";
 		clock-div = <16>;
-		mediatek,use-dma;
 
 		pinctrl-names = "default";
 		pinctrl-0 = <&i2c2_pins>;
@@ -303,22 +302,6 @@
 
 			#thermal-sensor-cells = <1>;
 		};
-	};
-
-	spi0: spi@1100a000 {
-		compatible = "mediatek,mt8127-spi",
-		"mediatek,mt2701-spi";
-		#address-cells = <1>;
-		#size-cells = <0>;
-		reg = <0 0x1100a000 0 0x100>;
-		interrupts = <GIC_SPI 78 IRQ_TYPE_LEVEL_LOW>;
-		clocks = <&topckgen CLK_TOP_SYSPLL3_D2>,
-		<&topckgen CLK_TOP_SPI0_SEL>,
-		<&pericfg CLK_PERI_SPI0>;
-		clock-names = "parent-clk", "sel-clk", "spi-clk";
-
-		pinctrl-names = "default";
-		pinctrl-0 = <&spi0_pins_a>;
 	};
 
 	pwrap: pwrap@1000d000 {
