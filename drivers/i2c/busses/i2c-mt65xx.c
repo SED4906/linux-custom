@@ -609,9 +609,11 @@ static void mtk_i2c_init_hw(struct mtk_i2c *i2c)
 		writel(I2C_DMA_CLR_FLAG, i2c->pdmabase + OFFSET_RST);
 		mtk_i2c_writew(i2c, I2C_CHN_CLR_FLAG, OFFSET_SOFTRESET);
 	} else {
-		writel(I2C_DMA_HARD_RST, i2c->pdmabase + OFFSET_RST);
-		udelay(50);
-		writel(I2C_DMA_CLR_FLAG, i2c->pdmabase + OFFSET_RST);
+		if(i2c->have_dma) {
+			writel(I2C_DMA_HARD_RST, i2c->pdmabase + OFFSET_RST);
+			udelay(50);
+			writel(I2C_DMA_CLR_FLAG, i2c->pdmabase + OFFSET_RST);
+		}
 		mtk_i2c_writew(i2c, I2C_SOFT_RST, OFFSET_SOFTRESET);
 	}
 
@@ -667,7 +669,10 @@ static void mtk_i2c_init_hw(struct mtk_i2c *i2c)
 		mtk_i2c_writew(i2c, I2C_CONTROL_WRAPPER, OFFSET_PATH_DIR);
 
 	control_reg = I2C_CONTROL_ACKERR_DET_EN |
-		      I2C_CONTROL_CLK_EXT_EN | I2C_CONTROL_DMA_EN;
+		      I2C_CONTROL_CLK_EXT_EN;
+	if (i2c->have_dma)
+		control_reg |= I2C_CONTROL_DMA_EN;
+
 	if (i2c->dev_comp->dma_sync)
 		control_reg |= I2C_CONTROL_DMAACK_EN | I2C_CONTROL_ASYNC_MODE;
 
@@ -1246,7 +1251,7 @@ static int mtk_i2c_do_transfer(struct mtk_i2c *i2c, struct i2c_msg *msgs,
 			u8 *ptr = msgs->buf;
 			while(data_size) {
 				u32 fifo_size = (mtk_i2c_readl(i2c, OFFSET_FIFO_STAT) >> 4) & 0xF;
-				if(fifo_size > data_size || fifo_size == 0) break; // that can't be right...
+				if(fifo_size > data_size || fifo_size == 0) goto welp; // that can't be right...
 				data_size -= fifo_size;
 				while(fifo_size--) {
 					*ptr++ = mtk_i2c_readl(i2c, OFFSET_DATA_PORT);
@@ -1254,6 +1259,7 @@ static int mtk_i2c_do_transfer(struct mtk_i2c *i2c, struct i2c_msg *msgs,
 			}
 		}
 		complete(&i2c->msg_complete);
+		welp:
 	}
 
 	ret = wait_for_completion_timeout(&i2c->msg_complete,
