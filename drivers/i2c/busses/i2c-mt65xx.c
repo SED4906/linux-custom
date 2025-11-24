@@ -1246,7 +1246,7 @@ static int mtk_i2c_do_transfer(struct mtk_i2c *i2c, struct i2c_msg *msgs,
 			u8 *ptr = msgs->buf;
 			while(data_size) {
 				u32 fifo_size = (mtk_i2c_readl(i2c, OFFSET_FIFO_STAT) >> 4) & 0xF;
-				if(fifo_size > data_size) break; // that can't be right...
+				if(fifo_size > data_size || fifo_size == 0) break; // that can't be right...
 				data_size -= fifo_size;
 				while(fifo_size--) {
 					*ptr++ = mtk_i2c_readl(i2c, OFFSET_DATA_PORT);
