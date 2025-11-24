@@ -1253,6 +1253,7 @@ static int mtk_i2c_do_transfer(struct mtk_i2c *i2c, struct i2c_msg *msgs,
 				}
 			}
 		}
+		complete(&i2c->msg_complete);
 	}
 
 	ret = wait_for_completion_timeout(&i2c->msg_complete,
