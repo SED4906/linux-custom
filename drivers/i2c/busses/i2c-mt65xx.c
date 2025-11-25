@@ -1234,6 +1234,7 @@ static int mtk_i2c_do_transfer(struct mtk_i2c *i2c, struct i2c_msg *msgs,
 	// This is stupid.
 	if (i2c->op != I2C_MASTER_RD) {
 		u32 data_size = msgs->len;
+		u8 *ptr = msgs->buf;
 		while(data_size--) {
 			mtk_i2c_writel(i2c, *ptr++, OFFSET_DATA_PORT);
 		}
