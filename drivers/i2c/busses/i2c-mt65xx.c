@@ -355,12 +355,8 @@ static const struct i2c_adapter_quirks mt6577_i2c_quirks = {
 };
 
 static const struct i2c_adapter_quirks mt8127_i2c_quirks = {
-	.flags = I2C_AQ_COMB_WRITE_THEN_READ,
-	.max_num_msgs = 1,
 	.max_write_len = 255,
 	.max_read_len = 255,
-	.max_comb_1st_msg_len = 255,
-	.max_comb_2nd_msg_len = 252,
 };
 
 static const struct i2c_adapter_quirks mt7622_i2c_quirks = {
