@@ -1085,7 +1085,7 @@ static int mtk_i2c_do_transfer(struct mtk_i2c *i2c, struct i2c_msg *msgs,
 	mtk_i2c_writew(i2c, control_reg, OFFSET_CONTROL);
 
 	addr_reg = i2c_8bit_addr_from_msg(msgs);
-	mtk_i2c_writew(i2c, addr_reg | 0x2000, OFFSET_SLAVE_ADDR);
+	mtk_i2c_writew(i2c, addr_reg, OFFSET_SLAVE_ADDR);
 
 	/* Clear interrupt status */
 	mtk_i2c_writew(i2c, restart_flag | I2C_HS_NACKERR | I2C_ACKERR |
@@ -1230,6 +1230,15 @@ static int mtk_i2c_do_transfer(struct mtk_i2c *i2c, struct i2c_msg *msgs,
 			start_reg |= I2C_RS_MUL_CNFG;
 	}
 	mtk_i2c_writew(i2c, start_reg, OFFSET_START);
+
+	// This is stupid.
+	if (i2c->op != I2C_MASTER_RD) {
+		u32 data_size = msgs->len;
+		while(data_size--) {
+			mtk_i2c_writel(i2c, *ptr++, OFFSET_DATA_PORT);
+		}
+		complete(&i2c->msg_complete);
+	}
 
 	ret = wait_for_completion_timeout(&i2c->msg_complete,
 					  i2c->adap.timeout);
