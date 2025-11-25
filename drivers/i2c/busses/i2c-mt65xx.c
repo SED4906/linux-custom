@@ -1229,6 +1229,14 @@ static int mtk_i2c_do_transfer(struct mtk_i2c *i2c, struct i2c_msg *msgs,
 		writel(I2C_DMA_START_EN, i2c->pdmabase + OFFSET_EN);
 	}
 
+	if(!i2c->have_dma && i2c->op != I2C_MASTER_RD) {
+		u32 data_size = msgs->len;
+		u8 *ptr = msgs->buf;
+		while(data_size--) {
+			mtk_i2c_writel(i2c, *ptr++, OFFSET_DATA_PORT);
+		}
+	}
+
 	if (!i2c->auto_restart) {
 		start_reg = I2C_TRANSAC_START;
 	} else {
@@ -1239,13 +1247,6 @@ static int mtk_i2c_do_transfer(struct mtk_i2c *i2c, struct i2c_msg *msgs,
 	mtk_i2c_writew(i2c, start_reg, OFFSET_START);
 
 	if(!i2c->have_dma) {
-		if(i2c->op != I2C_MASTER_RD) {
-			u32 data_size = msgs->len;
-			u8 *ptr = msgs->buf;
-			while(data_size--) {
-				mtk_i2c_writel(i2c, *ptr++, OFFSET_DATA_PORT);
-			}
-		}
 		u32 attempts = 10000;
 		if(i2c->op != I2C_MASTER_WR) {
 			u32 data_size = msgs->len;
@@ -1256,6 +1257,7 @@ static int mtk_i2c_do_transfer(struct mtk_i2c *i2c, struct i2c_msg *msgs,
 				data_size -= fifo_size;
 				while(fifo_size--) {
 					*ptr++ = mtk_i2c_readl(i2c, OFFSET_DATA_PORT);
+					attempts = 10000;
 				}
 				if(!attempts--) goto welp;
 			}
