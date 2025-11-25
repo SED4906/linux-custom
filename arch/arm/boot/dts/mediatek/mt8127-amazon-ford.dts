@@ -270,7 +270,7 @@
 		interrupts = <GIC_SPI 46 IRQ_TYPE_LEVEL_LOW>;
 		clocks = <&pericfg CLK_PERI_I2C2>, <&pericfg CLK_PERI_AP_DMA>;
 		clock-names = "main", "dma";
-		clock-frequency = <17062>;
+		clock-frequency = <272992>;
 		clock-div = <16>;
 
 		pinctrl-names = "default";
