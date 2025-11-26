@@ -909,6 +909,15 @@ config I2C_MT65XX
 	  If you want to use MediaTek(R) I2C interface, say Y or M here.
 	  If unsure, say N.
 
+config I2C_MT8127
+	tristate "MediaTek I2C adapter (MT8127)"
+	depends on ARCH_MEDIATEK || COMPILE_TEST
+	help
+	  This selects the MediaTek(R) Integrated Inter Circuit bus driver
+	  for MT8127.
+	  If you want to use MediaTek(R) I2C interface, say Y or M here.
+	  If unsure, say N.
+
 config I2C_MT7621
 	tristate "MT7621/MT7628 I2C Controller"
 	depends on (RALINK && (SOC_MT7620 || SOC_MT7621)) || ARCH_AIROHA || COMPILE_TEST
