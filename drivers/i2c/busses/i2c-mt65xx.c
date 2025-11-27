@@ -656,9 +656,6 @@ static void mtk_i2c_init_hw(struct mtk_i2c *i2c)
 
 	mtk_i2c_writew(i2c, control_reg, OFFSET_CONTROL);
 	mtk_i2c_writew(i2c, I2C_DELAY_LEN, OFFSET_DELAY_LEN);
-
-	if(i2c->strange_dma)
-		mtk_i2c_writew(i2c, 0, OFFSET_DATA_PORT);
 }
 
 static const struct i2c_spec_values *mtk_i2c_get_spec(unsigned int speed)
