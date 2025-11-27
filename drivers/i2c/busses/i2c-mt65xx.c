@@ -656,6 +656,9 @@ static void mtk_i2c_init_hw(struct mtk_i2c *i2c)
 
 	mtk_i2c_writew(i2c, control_reg, OFFSET_CONTROL);
 	mtk_i2c_writew(i2c, I2C_DELAY_LEN, OFFSET_DELAY_LEN);
+
+	if(i2c->strange_dma)
+		mtk_i2c_writew(i2c, 0, OFFSET_DATA_PORT);
 }
 
 static const struct i2c_spec_values *mtk_i2c_get_spec(unsigned int speed)
@@ -1211,18 +1214,6 @@ static int mtk_i2c_do_transfer(struct mtk_i2c *i2c, struct i2c_msg *msgs,
 			start_reg |= I2C_RS_MUL_CNFG;
 	}
 	mtk_i2c_writew(i2c, start_reg, OFFSET_START);
-
-	if (i2c->strange_dma && i2c->op != I2C_MASTER_RD) {
-		u8 *ptr = msgs->buf;
-		u32 data_size = msgs->len;
-		while(data_size--) {
-			mtk_i2c_writew(i2c, *ptr, OFFSET_DATA_PORT);
-			ptr++;
-		}
-		if (i2c->op == I2C_MASTER_WR) {
-			complete(&i2c->msg_complete);
-		}
-	}
 
 	ret = wait_for_completion_timeout(&i2c->msg_complete,
 					  i2c->adap.timeout);
