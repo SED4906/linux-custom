@@ -295,6 +295,7 @@ struct mtk_i2c {
 	struct clk_bulk_data clocks[I2C_MT65XX_CLK_MAX]; /* clocks for i2c */
 	bool have_pmic;			/* can use i2c pins from PMIC */
 	bool use_push_pull;		/* IO config push-pull mode */
+	bool strange_dma;		/* Strange DMA */
 
 	u16 irq_stat;			/* interrupt status */
 	unsigned int clk_src_div;
@@ -1211,6 +1212,18 @@ static int mtk_i2c_do_transfer(struct mtk_i2c *i2c, struct i2c_msg *msgs,
 	}
 	mtk_i2c_writew(i2c, start_reg, OFFSET_START);
 
+	if (i2c->strange_dma && i2c->op != I2C_MASTER_RD) {
+		u8 *ptr = msgs->buf;
+		u32 data_size = msgs->len;
+		while(data_size--) {
+			mtk_i2c_writew(i2c, *ptr, OFFSET_DATA_PORT);
+			ptr++;
+		}
+		if (i2c->op == I2C_MASTER_WR) {
+			complete(&i2c->msg_complete);
+		}
+	}
+
 	ret = wait_for_completion_timeout(&i2c->msg_complete,
 					  i2c->adap.timeout);
 
@@ -1384,6 +1397,7 @@ static int mtk_i2c_parse_dt(struct device_node *np, struct mtk_i2c *i2c)
 	i2c->have_pmic = of_property_read_bool(np, "mediatek,have-pmic");
 	i2c->use_push_pull =
 		of_property_read_bool(np, "mediatek,use-push-pull");
+	i2c->strange_dma = of_property_read_bool(np, "mediatek,strange-dma");
 
 	i2c_parse_fw_timings(i2c->dev, &i2c->timing_info, true);
 
