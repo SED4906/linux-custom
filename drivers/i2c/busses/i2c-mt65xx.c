@@ -3,7 +3,7 @@
  * Copyright (c) 2014 MediaTek Inc.
  * Author: Xudong Chen <xudong.chen@mediatek.com>
  */
-
+#define DEBUG
 #include <linux/clk.h>
 #include <linux/completion.h>
 #include <linux/delay.h>
@@ -1247,6 +1247,7 @@ static int mtk_i2c_do_transfer(struct mtk_i2c *i2c, struct i2c_msg *msgs,
 
 	if (i2c->irq_stat & (I2C_HS_NACKERR | I2C_ACKERR)) {
 		dev_dbg(i2c->dev, "addr: %x, transfer ACK error\n", msgs->addr);
+		i2c_dump_register(i2c);
 		mtk_i2c_init_hw(i2c);
 		return -ENXIO;
 	}

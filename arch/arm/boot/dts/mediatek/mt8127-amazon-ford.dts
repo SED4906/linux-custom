@@ -242,10 +242,9 @@
 		compatible = "mediatek,mt8127-i2c";
 		reg = <0 0x11007000 0 0x70>, <0 0x11000200 0 0x80>;
 		interrupts = <GIC_SPI 44 IRQ_TYPE_LEVEL_LOW>;
-		clocks = <&pericfg CLK_PERI_I2C0>, <&pericfg CLK_PERI_AP_DMA>;
+		clocks = <&pericfg CLK_PERI_UART3>, <&pericfg CLK_PERI_AP_DMA>;
 		clock-names = "main", "dma";
 		clock-div = <16>;
-		status = "disabled";
 
 		#address-cells = <1>;
 		#size-cells = <0>;
@@ -255,10 +254,9 @@
 		compatible = "mediatek,mt8127-i2c";
 		reg = <0 0x11008000 0 0x70>, <0 0x11000280 0 0x80>;
 		interrupts = <GIC_SPI 45 IRQ_TYPE_LEVEL_LOW>;
-		clocks = <&pericfg CLK_PERI_I2C1>, <&pericfg CLK_PERI_AP_DMA>;
+		clocks = <&pericfg CLK_PERI_BTIF>, <&pericfg CLK_PERI_AP_DMA>;
 		clock-names = "main", "dma";
 		clock-div = <16>;
-		status = "disabled";
 
 		#address-cells = <1>;
 		#size-cells = <0>;
