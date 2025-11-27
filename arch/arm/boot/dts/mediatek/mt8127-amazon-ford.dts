@@ -268,7 +268,7 @@
 		interrupts = <GIC_SPI 46 IRQ_TYPE_LEVEL_LOW>;
 		clocks = <&pericfg CLK_PERI_I2C0>, <&pericfg CLK_PERI_AP_DMA>;
 		clock-names = "main", "dma";
-		clock-div = <1>;
+		clock-div = <6>;
 		mediatek,strange-dma;
 
 		pinctrl-names = "default";
