@@ -357,10 +357,6 @@ static const struct i2c_adapter_quirks mt7622_i2c_quirks = {
 	.max_num_msgs = 255,
 };
 
-static const struct i2c_adapter_quirks mt8127_i2c_quirks = {
-	.flags = I2C_AQ_COMB_WRITE_THEN_READ,
-};
-
 static const struct i2c_adapter_quirks mt8183_i2c_quirks = {
 	.flags = I2C_AQ_NO_ZERO_LEN,
 };
@@ -460,7 +456,6 @@ static const struct mtk_i2c_compatible mt7986_compat = {
 
 
 static const struct mtk_i2c_compatible mt8127_compat = {
-	.quirks = &mt8127_i2c_quirks,
 	.regs = mt_i2c_regs_v1,
 	.pmic_i2c = 0,
 	.dcm = 1,
@@ -1237,6 +1232,7 @@ static int mtk_i2c_do_transfer(struct mtk_i2c *i2c, struct i2c_msg *msgs,
 			data_size -= fifo_size;
 			while(fifo_size--) {
 				*ptr = mtk_i2c_readw(i2c, OFFSET_DATA_PORT);
+				dev_dbg(i2c->dev, "read byte: %x", *ptr);
 				ptr++;
 			}
 		}
