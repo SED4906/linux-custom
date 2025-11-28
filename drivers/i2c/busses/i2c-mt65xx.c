@@ -1213,6 +1213,15 @@ static int mtk_i2c_do_transfer(struct mtk_i2c *i2c, struct i2c_msg *msgs,
 	}
 	mtk_i2c_writew(i2c, start_reg, OFFSET_START);
 
+	if(i2c->op == I2C_MASTER_WR) {
+		u8 *ptr = msgs->buf;
+		u32 data_size = msgs->len;
+		while(data_size--) {
+			mtk_i2c_writew(i2c, *ptr, OFFSET_DATA_PORT);
+			ptr++;
+		}
+	}
+
 	ret = wait_for_completion_timeout(&i2c->msg_complete,
 					  i2c->adap.timeout);
 
