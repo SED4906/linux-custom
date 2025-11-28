@@ -270,9 +270,6 @@
 		clock-names = "main", "dma";
 		clock-div = <16>;
 
-		pinctrl-names = "default";
-		pinctrl-0 = <&i2c2_pins>;
-
 		#address-cells = <1>;
 		#size-cells = <0>;
 

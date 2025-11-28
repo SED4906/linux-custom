@@ -295,7 +295,6 @@ struct mtk_i2c {
 	struct clk_bulk_data clocks[I2C_MT65XX_CLK_MAX]; /* clocks for i2c */
 	bool have_pmic;			/* can use i2c pins from PMIC */
 	bool use_push_pull;		/* IO config push-pull mode */
-	bool strange_dma;		/* Strange DMA */
 
 	u16 irq_stat;			/* interrupt status */
 	unsigned int clk_src_div;
@@ -459,6 +458,7 @@ static const struct mtk_i2c_compatible mt7986_compat = {
 	.max_dma_support = 32,
 };
 
+
 static const struct mtk_i2c_compatible mt8127_compat = {
 	.quirks = &mt8127_i2c_quirks,
 	.regs = mt_i2c_regs_v1,
@@ -472,6 +472,7 @@ static const struct mtk_i2c_compatible mt8127_compat = {
 	.apdma_sync = 0,
 	.max_dma_support = 32,
 };
+
 
 static const struct mtk_i2c_compatible mt8173_compat = {
 	.regs = mt_i2c_regs_v1,
@@ -567,7 +568,6 @@ static void mtk_i2c_writew(struct mtk_i2c *i2c, u16 val,
 			   enum I2C_REGS_OFFSET reg)
 {
 	writew(val, i2c->base + i2c->dev_comp->regs[reg]);
-	dsb();
 }
 
 static void mtk_i2c_init_hw(struct mtk_i2c *i2c)
@@ -1105,9 +1105,7 @@ static int mtk_i2c_do_transfer(struct mtk_i2c *i2c, struct i2c_msg *msgs,
 	/* Prepare buffer data to start transfer */
 	if (i2c->op == I2C_MASTER_RD) {
 		writel(I2C_DMA_INT_FLAG_NONE, i2c->pdmabase + OFFSET_INT_FLAG);
-		dsb();
 		writel(I2C_DMA_CON_RX | dma_sync, i2c->pdmabase + OFFSET_CON);
-		dsb();
 
 		dma_rd_buf = i2c_get_dma_safe_msg_buf(msgs, 1);
 		if (!dma_rd_buf)
@@ -1127,14 +1125,10 @@ static int mtk_i2c_do_transfer(struct mtk_i2c *i2c, struct i2c_msg *msgs,
 		}
 
 		writel((u32)rpaddr, i2c->pdmabase + OFFSET_RX_MEM_ADDR);
-		dsb();
 		writel(msgs->len, i2c->pdmabase + OFFSET_RX_LEN);
-		dsb();
 	} else if (i2c->op == I2C_MASTER_WR) {
 		writel(I2C_DMA_INT_FLAG_NONE, i2c->pdmabase + OFFSET_INT_FLAG);
-		dsb();
 		writel(I2C_DMA_CON_TX | dma_sync, i2c->pdmabase + OFFSET_CON);
-		dsb();
 
 		dma_wr_buf = i2c_get_dma_safe_msg_buf(msgs, 1);
 		if (!dma_wr_buf)
@@ -1154,14 +1148,10 @@ static int mtk_i2c_do_transfer(struct mtk_i2c *i2c, struct i2c_msg *msgs,
 		}
 
 		writel((u32)wpaddr, i2c->pdmabase + OFFSET_TX_MEM_ADDR);
-		dsb();
 		writel(msgs->len, i2c->pdmabase + OFFSET_TX_LEN);
-		dsb();
 	} else {
 		writel(I2C_DMA_CLR_FLAG, i2c->pdmabase + OFFSET_INT_FLAG);
-		dsb();
 		writel(I2C_DMA_CLR_FLAG | dma_sync, i2c->pdmabase + OFFSET_CON);
-		dsb();
 
 		dma_wr_buf = i2c_get_dma_safe_msg_buf(msgs, 1);
 		if (!dma_wr_buf)
@@ -1207,15 +1197,10 @@ static int mtk_i2c_do_transfer(struct mtk_i2c *i2c, struct i2c_msg *msgs,
 		}
 
 		writel((u32)wpaddr, i2c->pdmabase + OFFSET_TX_MEM_ADDR);
-		dsb();
 		writel((u32)rpaddr, i2c->pdmabase + OFFSET_RX_MEM_ADDR);
-		dsb();
 		writel(msgs->len, i2c->pdmabase + OFFSET_TX_LEN);
-		dsb();
 		writel((msgs + 1)->len, i2c->pdmabase + OFFSET_RX_LEN);
-		dsb();
 	}
-	mb();
 
 	writel(I2C_DMA_START_EN, i2c->pdmabase + OFFSET_EN);
 
@@ -1226,9 +1211,6 @@ static int mtk_i2c_do_transfer(struct mtk_i2c *i2c, struct i2c_msg *msgs,
 		if (left_num >= 1)
 			start_reg |= I2C_RS_MUL_CNFG;
 	}
-
-	mb();
-
 	mtk_i2c_writew(i2c, start_reg, OFFSET_START);
 
 	ret = wait_for_completion_timeout(&i2c->msg_complete,
@@ -1404,7 +1386,6 @@ static int mtk_i2c_parse_dt(struct device_node *np, struct mtk_i2c *i2c)
 	i2c->have_pmic = of_property_read_bool(np, "mediatek,have-pmic");
 	i2c->use_push_pull =
 		of_property_read_bool(np, "mediatek,use-push-pull");
-	i2c->strange_dma = of_property_read_bool(np, "mediatek,strange-dma");
 
 	i2c_parse_fw_timings(i2c->dev, &i2c->timing_info, true);
 
