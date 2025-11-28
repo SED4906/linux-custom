@@ -1213,12 +1213,32 @@ static int mtk_i2c_do_transfer(struct mtk_i2c *i2c, struct i2c_msg *msgs,
 	}
 	mtk_i2c_writew(i2c, start_reg, OFFSET_START);
 
-	if(i2c->op == I2C_MASTER_WR) {
+	if(i2c->op != I2C_MASTER_RD) {
 		u8 *ptr = msgs->buf;
 		u32 data_size = msgs->len;
 		while(data_size--) {
 			mtk_i2c_writew(i2c, *ptr, OFFSET_DATA_PORT);
 			ptr++;
+		}
+	}
+
+	if(i2c->op != I2C_MASTER_WR) {
+		u8 *ptr = msgs->buf;
+		u32 data_size = msgs->len;
+		u32 attempts = 10000;
+		while(data_size && attempts) {
+			u32 fifo_size = (mtk_i2c_readw(i2c, OFFSET_FIFO_STAT) >> 4) & 0xF;
+			if(fifo_size > data_size) break;
+			if(fifo_size == 0) {
+				attempts--;
+			} else {
+				attempts = 10000;
+			}
+			data_size -= fifo_size;
+			while(fifo_size--) {
+				*ptr = mtk_i2c_readw(i2c, OFFSET_DATA_PORT);
+				ptr++;
+			}
 		}
 	}
 
