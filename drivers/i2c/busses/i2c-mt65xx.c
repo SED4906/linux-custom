@@ -466,7 +466,7 @@ static const struct mtk_i2c_compatible mt8127_compat = {
 	.dcm = 1,
 	.auto_restart = 0,
 	.aux_len_reg = 0,
-	.timing_adjust = 1,
+	.timing_adjust = 0,
 	.dma_sync = 0,
 	.ltiming_adjust = 0,
 	.apdma_sync = 0,
@@ -1211,33 +1211,6 @@ static int mtk_i2c_do_transfer(struct mtk_i2c *i2c, struct i2c_msg *msgs,
 			start_reg |= I2C_RS_MUL_CNFG;
 	}
 	mtk_i2c_writew(i2c, start_reg, OFFSET_START);
-
-	if (i2c->strange_dma && !readl(i2c->pdmabase + OFFSET_EN)) {
-		u16 fifo_stat = mtk_i2c_readw(i2c, OFFSET_FIFO_STAT);
-		dev_dbg(i2c->dev, "FIFO_STAT: %x\n", fifo_stat);
-		if (i2c->op != I2C_MASTER_RD) {
-			u8 *ptr = msgs->buf;
-			u32 data_size = msgs->len;
-			while(data_size--) {
-				mtk_i2c_writew(i2c, *ptr, OFFSET_DATA_PORT);
-				ptr++;
-			}
-		}
-
-		if (i2c->op != I2C_MASTER_WR) {
-			u8 *ptr = msgs->buf;
-			u32 data_size = (fifo_stat >> 4) & 0xF;
-			if (data_size <= msgs->len) {
-				while(data_size--) {
-					*ptr = mtk_i2c_readw(i2c, OFFSET_DATA_PORT);
-					dev_dbg(i2c->dev, "read byte: %x\n", *ptr);
-					ptr++;
-				}
-			} else {
-				dev_dbg(i2c->dev, "very strange\n");
-			}
-		}
-	}
 
 	ret = wait_for_completion_timeout(&i2c->msg_complete,
 					  i2c->adap.timeout);

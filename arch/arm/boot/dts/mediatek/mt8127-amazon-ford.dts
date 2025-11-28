@@ -238,6 +238,15 @@
 		};
 	};
 
+	cqdma: cqdma@11000000 {
+		compatible = "mediatek,mt6765-cqdma";
+		reg = <0 0x11000000 0 0x200>;
+		clocks = <&pericfg CLK_PERI_AP_DMA>;
+		clock-names = "cqdma";
+		dma-channels = <2>;
+		interrupts = <GIC_SPI 57 IRQ_TYPE_LEVEL_LOW>, <GIC_SPI 58 IRQ_TYPE_LEVEL_LOW>;
+	};
+
 	i2c0: i2c@11007000 {
 		compatible = "mediatek,mt8127-i2c";
 		reg = <0 0x11007000 0 0x70>, <0 0x11000200 0 0x80>;
@@ -269,7 +278,6 @@
 		clocks = <&pericfg CLK_PERI_I2C0>, <&pericfg CLK_PERI_AP_DMA>;
 		clock-names = "main", "dma";
 		clock-div = <16>;
-		mediatek,strange-dma;
 
 		pinctrl-names = "default";
 		pinctrl-0 = <&i2c2_pins>;
