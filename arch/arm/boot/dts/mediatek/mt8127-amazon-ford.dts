@@ -290,13 +290,6 @@
 			vcc-supply = <&mt6397_vgp2_reg>;
 			iovcc-supply = <&mt6397_vgp2_reg>;
 		};
-
-		sensor@70 {
-			compatible = "ti,tmp103";
-			reg = <0x70>;
-
-			#thermal-sensor-cells = <1>;
-		};
 	};
 
 	pwrap: pwrap@1000d000 {
