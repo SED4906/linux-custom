@@ -646,7 +646,7 @@ static void mtk_i2c_init_hw(struct mtk_i2c *i2c)
 		mtk_i2c_writew(i2c, I2C_CONTROL_WRAPPER, OFFSET_PATH_DIR);
 
 	control_reg = I2C_CONTROL_ACKERR_DET_EN |
-		      I2C_CONTROL_CLK_EXT_EN/* | I2C_CONTROL_DMA_EN*/;
+		      I2C_CONTROL_CLK_EXT_EN | I2C_CONTROL_DMA_EN;
 	if (i2c->dev_comp->dma_sync)
 		control_reg |= I2C_CONTROL_DMAACK_EN | I2C_CONTROL_ASYNC_MODE;
 
@@ -1098,7 +1098,6 @@ static int mtk_i2c_do_transfer(struct mtk_i2c *i2c, struct i2c_msg *msgs,
 	}
 
 	/* Prepare buffer data to start transfer */
-	/*
 	if (i2c->op == I2C_MASTER_RD) {
 		writel(I2C_DMA_INT_FLAG_NONE, i2c->pdmabase + OFFSET_INT_FLAG);
 		writel(I2C_DMA_CON_RX | dma_sync, i2c->pdmabase + OFFSET_CON);
@@ -1199,7 +1198,6 @@ static int mtk_i2c_do_transfer(struct mtk_i2c *i2c, struct i2c_msg *msgs,
 	}
 
 	writel(I2C_DMA_START_EN, i2c->pdmabase + OFFSET_EN);
-	*/
 
 	if (!i2c->auto_restart) {
 		start_reg = I2C_TRANSAC_START;
@@ -1210,37 +1208,6 @@ static int mtk_i2c_do_transfer(struct mtk_i2c *i2c, struct i2c_msg *msgs,
 	}
 	mtk_i2c_writew(i2c, start_reg, OFFSET_START);
 
-	if(i2c->op != I2C_MASTER_RD) {
-		u8 *ptr = msgs->buf;
-		u32 data_size = msgs->len;
-		while(data_size--) {
-			mtk_i2c_writew(i2c, *ptr, OFFSET_DATA_PORT);
-			ptr++;
-		}
-	}
-
-	if(i2c->op != I2C_MASTER_WR) {
-		u8 *ptr = msgs->buf;
-		u32 data_size = msgs->len;
-		u32 attempts = 10000;
-		while(data_size && attempts) {
-			u32 fifo_size = (mtk_i2c_readw(i2c, OFFSET_FIFO_STAT) >> 4) & 0xF;
-			if(fifo_size > data_size) break;
-			if(fifo_size == 0) {
-				attempts--;
-			} else {
-				attempts = 10000;
-			}
-			data_size -= fifo_size;
-			while(fifo_size--) {
-				*ptr = mtk_i2c_readw(i2c, OFFSET_DATA_PORT);
-				dev_dbg(i2c->dev, "read byte: %x", *ptr);
-				ptr++;
-			}
-			udelay(50);
-		}
-	}
-
 	ret = wait_for_completion_timeout(&i2c->msg_complete,
 					  i2c->adap.timeout);
 
@@ -1248,7 +1215,6 @@ static int mtk_i2c_do_transfer(struct mtk_i2c *i2c, struct i2c_msg *msgs,
 	mtk_i2c_writew(i2c, ~(restart_flag | I2C_HS_NACKERR | I2C_ACKERR |
 			    I2C_ARB_LOST | I2C_TRANSAC_COMP), OFFSET_INTR_MASK);
 
-	/*
 	if (i2c->op == I2C_MASTER_WR) {
 		dma_unmap_single(i2c->dev, wpaddr,
 				 msgs->len, DMA_TO_DEVICE);
@@ -1268,7 +1234,6 @@ static int mtk_i2c_do_transfer(struct mtk_i2c *i2c, struct i2c_msg *msgs,
 		i2c_put_dma_safe_msg_buf(dma_wr_buf, msgs, true);
 		i2c_put_dma_safe_msg_buf(dma_rd_buf, (msgs + 1), true);
 	}
-	*/
 
 	if (ret == 0) {
 		dev_dbg(i2c->dev, "addr: %x, transfer timeout\n", msgs->addr);
@@ -1302,13 +1267,13 @@ static int mtk_i2c_transfer(struct i2c_adapter *adap,
 	i2c->auto_restart = i2c->dev_comp->auto_restart;
 
 	/* checking if we can skip restart and optimize using WRRD mode */
-	/*if (i2c->auto_restart && num == 2) {
+	if (i2c->auto_restart && num == 2) {
 		if (!(msgs[0].flags & I2C_M_RD) && (msgs[1].flags & I2C_M_RD) &&
 		    msgs[0].addr == msgs[1].addr) {
 			i2c->auto_restart = 0;
 			write_then_read_en = true;
 		}
-	}*/
+	}
 
 	if (i2c->auto_restart && num >= 2 &&
 		i2c->speed_hz > I2C_MAX_FAST_MODE_PLUS_FREQ)
