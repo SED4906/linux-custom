@@ -272,6 +272,13 @@
 		#address-cells = <1>;
 		#size-cells = <0>;
 
+		tmp103@70 {
+			compatible = "ti,tmp103";
+
+			reg = <0x70>;
+			#thermal-sensor-cells = <1>;
+		};
+
 		touchscreen@38 {
 			compatible = "edt,edt-ft5406";
 			reg = <0x38>;

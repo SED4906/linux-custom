@@ -3,7 +3,6 @@
  * Copyright (c) 2014 MediaTek Inc.
  * Author: Xudong Chen <xudong.chen@mediatek.com>
  */
-#define DEBUG
 #include <linux/clk.h>
 #include <linux/completion.h>
 #include <linux/delay.h>
@@ -1207,6 +1206,15 @@ static int mtk_i2c_do_transfer(struct mtk_i2c *i2c, struct i2c_msg *msgs,
 			start_reg |= I2C_RS_MUL_CNFG;
 	}
 	mtk_i2c_writew(i2c, start_reg, OFFSET_START);
+
+	dev_dbg(i2c->dev, "Register:INT_FLAG:0x%x,CON:0x%x,TX_MEM_ADDR:0x%x,RX_MEM_ADDR:0x%x,TX_LEN:0x%x,RX_LEN:0x%x,EN:0x%x\n",
+		readl(i2c->pdmabase + OFFSET_INT_FLAG),
+                  readl(i2c->pdmabase + OFFSET_CON),
+                  readl(i2c->pdmabase + OFFSET_TX_MEM_ADDR),
+                  readl(i2c->pdmabase + OFFSET_RX_MEM_ADDR),
+                  readl(i2c->pdmabase + OFFSET_TX_LEN),
+                  readl(i2c->pdmabase + OFFSET_RX_LEN),
+                  readl(i2c->pdmabase + OFFSET_EN));
 
 	ret = wait_for_completion_timeout(&i2c->msg_complete,
 					  i2c->adap.timeout);
