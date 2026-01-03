@@ -1,0 +1,238 @@
+// SPDX-License-Identifier: GPL-2.0
+/*
+ * Copyright (c) 2014 MediaTek Inc.
+ * Author: Joe.C <yingjoe.chen@mediatek.com>
+ *
+ */
+
+/dts-v1/;
+#include "mt8127.dtsi"
+#include <dt-bindings/phy/phy.h>
+#include "mt8127-pinfunc.h"
+#include <dt-bindings/memory/mt2701-larb-port.h>
+#include <dt-bindings/gpio/gpio.h>
+#include <dt-bindings/input/input.h>
+
+/ {
+	model = "MediaTek MT8127 Amazon Fire 7 (ford, 2015)";
+	compatible = "mediatek,mt8127";
+
+	chosen {
+		stdout-path = &mtk_fb;
+		#address-cells = <2>;
+		#size-cells = <2>;
+		ranges;
+
+		mtk_fb: framebuffer@b7a00000 {
+			compatible = "simple-framebuffer";
+			width = <1024>;
+			height = <600>;
+			reg = <0 0xb7a00000 0 (1024 * 600 * 2)>;
+			stride = <(1024 * 2)>;
+			format = "r5g6b5";
+		};
+	};
+
+	usb@11200000 {
+		compatible = "mediatek,mt8127-musb", "mediatek,mtk-musb";
+		reg = <0 0x11200000 0 0x1000>;
+		interrupts = <GIC_SPI 32 IRQ_TYPE_LEVEL_LOW>;
+		interrupt-names = "mc";
+		phys = <&uport PHY_TYPE_USB2>;
+		clocks = <&pericfg CLK_PERI_USB0>,
+			 <&pericfg CLK_PERI_USB0_MCU>,
+			 <&apmixedsys CLK_APMIXED_UNIVPLL>;
+		clock-names = "main","mcu","univpll";
+		dr_mode = "otg";
+		usb-role-switch;
+
+		connector {
+			compatible = "usb-b-connector";
+			type = "micro";
+		};
+	};
+
+	uphy: t-phy@11210000 {
+		compatible = "mediatek,mt8127-tphy",
+		"mediatek,generic-tphy-v1";
+		reg = <0 0x11210000 0 0x0800>;
+		#address-cells = <2>;
+		#size-cells = <2>;
+		ranges;
+
+		uport: usb-phy@11210800 {
+			reg = <0 0x11210800 0 0x0100>;
+			clocks = <&apmixedsys CLK_APMIXED_UNIVPLL>;
+			clock-names = "ref";
+			#phy-cells = <1>;
+		};
+	};
+
+	i2c0: i2c@11007000 {
+		compatible = "mediatek,mt8127-i2c";
+		reg = <0 0x11007000 0 0x70>, <0 0x11000200 0 0x80>;
+		interrupts = <GIC_SPI 44 IRQ_TYPE_LEVEL_LOW>;
+		clocks = <&pericfg CLK_PERI_I2C0>, <&pericfg CLK_PERI_AP_DMA>;
+		clock-names = "main", "dma";
+		clock-div = <16>;
+
+		#address-cells = <1>;
+		#size-cells = <0>;
+	};
+
+	i2c1: i2c@11008000 {
+		compatible = "mediatek,mt8127-i2c";
+		reg = <0 0x11008000 0 0x70>, <0 0x11000280 0 0x80>;
+		interrupts = <GIC_SPI 45 IRQ_TYPE_LEVEL_LOW>;
+		clocks = <&pericfg CLK_PERI_I2C1>, <&pericfg CLK_PERI_AP_DMA>;
+		clock-names = "main", "dma";
+		clock-div = <16>;
+
+		#address-cells = <1>;
+		#size-cells = <0>;
+	};
+
+	i2c2: i2c@11009000 {
+		compatible = "mediatek,mt8127-i2c";
+		reg = <0 0x11009000 0 0x70>, <0 0x11000300 0 0x80>;
+		interrupts = <GIC_SPI 46 IRQ_TYPE_LEVEL_LOW>;
+		clocks = <&pericfg CLK_PERI_I2C2>, <&pericfg CLK_PERI_AP_DMA>;
+		clock-names = "main", "dma";
+		clock-frequency = <17062>;
+		clock-div = <16>;
+
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		tmp103@70 {
+			status = "disabled";
+			compatible = "ti,tmp103";
+
+			reg = <0x70>;
+			#thermal-sensor-cells = <1>;
+		};
+
+		touchscreen@38 {
+			compatible = "edt,edt-ft5406";
+			reg = <0x38>;
+
+			interrupt-parent = <&pio>;
+			interrupts = <7 IRQ_TYPE_EDGE_FALLING>;
+
+			reset-gpios = <&pio 45 GPIO_ACTIVE_LOW>;
+
+			touchscreen-size-x = <1024>;
+			touchscreen-size-y = <600>;
+
+			report-rate-hz = <120>;
+
+			vcc-supply = <&reg_1p8v>;
+			iovcc-supply = <&reg_1p8v>;
+		};
+	};
+
+	mmc0: mmc@11230000 {
+		compatible = "mediatek,mt2701-mmc";
+		reg = <0 0x11230000 0 0x1000>;
+		interrupts = <GIC_SPI 39 IRQ_TYPE_LEVEL_LOW>;
+		vmmc-supply = <&reg_3p3v>;
+		vqmmc-supply = <&reg_1p8v>;
+		clocks = <&pericfg CLK_PERI_MSDC30_0>,
+		<&pericfg CLK_PERI_MSDC30_1>;
+		clock-names = "source", "hclk";
+		pinctrl-names = "default", "state_uhs";
+		pinctrl-0 = <&mmc0_pins_default>;
+		pinctrl-1 = <&mmc0_pins_uhs>;
+		max-frequency = <50000000>;
+		non-removable;
+	};
+
+	reg_1p8v: regulator-1p8v {
+		compatible = "regulator-fixed";
+		regulator-name = "fixed-1.8V";
+		regulator-min-microvolt = <1800000>;
+		regulator-max-microvolt = <1800000>;
+		regulator-boot-on;
+		regulator-always-on;
+	};
+
+	reg_3p3v: regulator-3p3v {
+		compatible = "regulator-fixed";
+		regulator-name = "fixed-3.3V";
+		regulator-min-microvolt = <3300000>;
+		regulator-max-microvolt = <3300000>;
+		regulator-boot-on;
+		regulator-always-on;
+	};
+
+	memory {
+		device_type = "memory";
+		reg = <0 0x80000000 0 0x37900000>;
+	};
+
+	reserved-memory {
+		#address-cells = <2>;
+		#size-cells = <2>;
+		ranges;
+
+		mtk_ram_console@83f00000 {
+			reg = <0 0x83F00000 0 0x100000>;
+		};
+	};
+};
+
+&pio {
+	mmc0_pins_default: mmc0default {
+		pins-cmd-dat {
+			pinmux = <MT8127_PIN_127_MSDC0_DAT7__FUNC_MSDC0_DAT7>,
+			<MT8127_PIN_128_MSDC0_DAT6__FUNC_MSDC0_DAT6>,
+			<MT8127_PIN_129_MSDC0_DAT5__FUNC_MSDC0_DAT5>,
+			<MT8127_PIN_130_MSDC0_DAT4__FUNC_MSDC0_DAT4>,
+			<MT8127_PIN_134_MSDC0_DAT3__FUNC_MSDC0_DAT3>,
+			<MT8127_PIN_135_MSDC0_DAT2__FUNC_MSDC0_DAT2>,
+			<MT8127_PIN_136_MSDC0_DAT1__FUNC_MSDC0_DAT1>,
+			<MT8127_PIN_137_MSDC0_DAT0__FUNC_MSDC0_DAT0>,
+			<MT8127_PIN_132_MSDC0_CMD__FUNC_MSDC0_CMD>;
+			input-enable;
+			bias-pull-up;
+		};
+
+		pins-clk {
+			pinmux = <MT8127_PIN_133_MSDC0_CLK__FUNC_MSDC0_CLK>;
+			bias-pull-down;
+		};
+
+		pins-rst {
+			pinmux = <MT8127_PIN_131_MSDC0_RSTB__FUNC_MSDC0_RSTB>;
+			bias-pull-up;
+		};
+	};
+
+	mmc0_pins_uhs: mmc0 {
+		pins-cmd-dat {
+			pinmux = <MT8127_PIN_127_MSDC0_DAT7__FUNC_MSDC0_DAT7>,
+			<MT8127_PIN_128_MSDC0_DAT6__FUNC_MSDC0_DAT6>,
+			<MT8127_PIN_129_MSDC0_DAT5__FUNC_MSDC0_DAT5>,
+			<MT8127_PIN_130_MSDC0_DAT4__FUNC_MSDC0_DAT4>,
+			<MT8127_PIN_134_MSDC0_DAT3__FUNC_MSDC0_DAT3>,
+			<MT8127_PIN_135_MSDC0_DAT2__FUNC_MSDC0_DAT2>,
+			<MT8127_PIN_136_MSDC0_DAT1__FUNC_MSDC0_DAT1>,
+			<MT8127_PIN_137_MSDC0_DAT0__FUNC_MSDC0_DAT0>,
+			<MT8127_PIN_132_MSDC0_CMD__FUNC_MSDC0_CMD>;
+			input-enable;
+			drive-strength = <2>;
+			bias-pull-up = <MTK_PUPD_SET_R1R0_01>;
+		};
+
+		pins-clk {
+			pinmux = <MT8127_PIN_133_MSDC0_CLK__FUNC_MSDC0_CLK>;
+			drive-strength = <2>;
+			bias-pull-down = <MTK_PUPD_SET_R1R0_01>;
+		};
+
+		pins-rst {
+			pinmux = <MT8127_PIN_131_MSDC0_RSTB__FUNC_MSDC0_RSTB>;
+			bias-pull-up;
+		};
+	};
+};
