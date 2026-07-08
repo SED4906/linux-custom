@@ -469,6 +469,14 @@ config COMMON_CLK_MT7988
 	  This driver supports MediaTek MT7988 basic clocks and clocks
 	  required for various periperals found on this SoC.
 
+config COMMON_CLK_MT8127
+	bool "Clock driver for MediaTek MT8127"
+	depends on (ARCH_MEDIATEK && ARM) || COMPILE_TEST
+	select COMMON_CLK_MEDIATEK
+	default ARCH_MEDIATEK && ARM
+	help
+	  This driver supports MediaTek MT8127 basic clocks.
+
 config COMMON_CLK_MT8135
 	tristate "Clock driver for MediaTek MT8135"
 	depends on (ARCH_MEDIATEK && ARM) || COMPILE_TEST

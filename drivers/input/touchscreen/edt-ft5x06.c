@@ -1453,6 +1453,10 @@ static const struct edt_i2c_chip_data edt_ft5x06_data = {
 	.max_support_points = 5,
 };
 
+static const struct edt_i2c_chip_data edt_ft5436_data = {
+	.max_support_points = 4,
+};
+
 static const struct edt_i2c_chip_data edt_ft3518_data = {
 	.max_support_points = 10,
 };
@@ -1483,6 +1487,7 @@ static const struct edt_i2c_chip_data edt_ft8719_data = {
 
 static const struct i2c_device_id edt_ft5x06_ts_id[] = {
 	{ .name = "edt-ft5x06", .driver_data = (long)&edt_ft5x06_data },
+	{ .name = "edt-ft5436", .driver_data = (long)&edt_ft5436_data },
 	{ .name = "edt-ft5506", .driver_data = (long)&edt_ft5506_data },
 	{ .name = "ev-ft5726", .driver_data = (long)&edt_ft5506_data },
 	{ .name = "ft3518", .driver_data = (long)&edt_ft3518_data },
@@ -1500,6 +1505,7 @@ static const struct of_device_id edt_ft5x06_of_match[] = {
 	{ .compatible = "edt,edt-ft5206", .data = &edt_ft5x06_data },
 	{ .compatible = "edt,edt-ft5306", .data = &edt_ft5x06_data },
 	{ .compatible = "edt,edt-ft5406", .data = &edt_ft5x06_data },
+	{ .compatible = "edt,edt-ft5436", .data = &edt_ft5436_data },
 	{ .compatible = "edt,edt-ft5506", .data = &edt_ft5506_data },
 	{ .compatible = "evervision,ev-ft5726", .data = &edt_ft5506_data },
 	{ .compatible = "focaltech,ft3518", .data = &edt_ft3518_data },

@@ -5,6 +5,42 @@
 
 menu "Misc devices"
 
+config MTK_RAM_CONSOLE
+	bool "Mediatek RAM console"
+	help
+	  Do it again 'cause we're mindless pissants
+	  Do it again 'cause we haven't learned sense
+	  Do it again so we auto-cremate
+	  Don't do it again because it isn't safe
+
+config MTK_RAM_CONSOLE_USING_SRAM
+	bool "Using SRAM as ram console storage"
+	depends on MTK_RAM_CONSOLE
+
+config MTK_RAM_CONSOLE_USING_DRAM
+	bool "Using DRAM as ram console storage"
+	depends on MTK_RAM_CONSOLE
+
+config MTK_RAM_CONSOLE_SIZE
+	hex "MTK RAM console  SIZE!!!"
+	default 0
+	depends on MTK_RAM_CONSOLE
+
+config MTK_RAM_CONSOLE_ADDR
+	hex "MTK RAM console buffer ADDRESS!!!"
+	default 0
+	depends on MTK_RAM_CONSOLE
+
+config MTK_RAM_CONSOLE_DRAM_SIZE
+	hex "MTK RAM console dram SIZE!!!"
+	default 0
+	depends on MTK_RAM_CONSOLE
+
+config MTK_RAM_CONSOLE_DRAM_ADDR
+	hex "MTK RAM console dram ADDRESS!!!"
+	default 0
+	depends on MTK_RAM_CONSOLE
+
 config SENSORS_LIS3LV02D
 	tristate
 	depends on INPUT
