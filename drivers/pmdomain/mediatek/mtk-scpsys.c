@@ -634,6 +634,58 @@ static const struct scp_domain_data scp_domain_data_mt2701[] = {
 };
 
 /*
+ * MT8127 power domain support
+ */
+
+static const struct scp_domain_data scp_domain_data_mt8127[] = {
+	[MT2701_POWER_DOMAIN_CONN] = {
+		.name = "conn",
+		.sta_mask = PWR_STATUS_CONN,
+		.ctl_offs = SPM_CONN_PWR_CON,
+		.bus_prot_mask = MT2701_TOP_AXI_PROT_EN_CONN_M |
+				 MT2701_TOP_AXI_PROT_EN_CONN_S,
+		.clk_id = {CLK_NONE},
+		.caps = MTK_SCPD_ACTIVE_WAKEUP,
+	},
+	[MT2701_POWER_DOMAIN_DISP] = {
+		.name = "disp",
+		.sta_mask = PWR_STATUS_DISP,
+		.ctl_offs = SPM_DIS_PWR_CON,
+		.sram_pdn_bits = GENMASK(11, 8),
+		.clk_id = {CLK_MM},
+		.bus_prot_mask = MT2701_TOP_AXI_PROT_EN_MM_M0,
+		.caps = MTK_SCPD_ACTIVE_WAKEUP,
+	},
+	[MT2701_POWER_DOMAIN_MFG] = {
+		.name = "mfg",
+		.sta_mask = PWR_STATUS_MFG,
+		.ctl_offs = SPM_MFG_PWR_CON,
+		.sram_pdn_bits = GENMASK(11, 8),
+		.sram_pdn_ack_bits = GENMASK(12, 12),
+		.clk_id = {CLK_MFG},
+		.caps = MTK_SCPD_ACTIVE_WAKEUP,
+	},
+	[MT2701_POWER_DOMAIN_VDEC] = {
+		.name = "vdec",
+		.sta_mask = PWR_STATUS_VDEC,
+		.ctl_offs = SPM_VDE_PWR_CON,
+		.sram_pdn_bits = GENMASK(11, 8),
+		.sram_pdn_ack_bits = GENMASK(12, 12),
+		.clk_id = {CLK_MM},
+		.caps = MTK_SCPD_ACTIVE_WAKEUP,
+	},
+	[MT2701_POWER_DOMAIN_ISP] = {
+		.name = "isp",
+		.sta_mask = PWR_STATUS_ISP,
+		.ctl_offs = SPM_ISP_PWR_CON,
+		.sram_pdn_bits = GENMASK(11, 8),
+		.sram_pdn_ack_bits = GENMASK(13, 12),
+		.clk_id = {CLK_MM},
+		.caps = MTK_SCPD_ACTIVE_WAKEUP,
+	},
+};
+
+/*
  * MT2712 power domain support
  */
 static const struct scp_domain_data scp_domain_data_mt2712[] = {
@@ -1029,6 +1081,16 @@ static const struct scp_soc_data mt2701_data = {
 	.bus_prot_reg_update = true,
 };
 
+static const struct scp_soc_data mt8127_data = {
+	.domains = scp_domain_data_mt8127,
+	.num_domains = ARRAY_SIZE(scp_domain_data_mt8127),
+	.regs = {
+		.pwr_sta_offs = SPM_PWR_STATUS,
+		.pwr_sta2nd_offs = SPM_PWR_STATUS_2ND
+	},
+	.bus_prot_reg_update = true,
+};
+
 static const struct scp_soc_data mt2712_data = {
 	.domains = scp_domain_data_mt2712,
 	.num_domains = ARRAY_SIZE(scp_domain_data_mt2712),
@@ -1093,6 +1155,9 @@ static const struct of_device_id of_scpsys_match_tbl[] = {
 	{
 		.compatible = "mediatek,mt2701-scpsys",
 		.data = &mt2701_data,
+	}, {
+		.compatible = "mediatek,mt8127-scpsys",
+		.data = &mt8127_data,
 	}, {
 		.compatible = "mediatek,mt2712-scpsys",
 		.data = &mt2712_data,
