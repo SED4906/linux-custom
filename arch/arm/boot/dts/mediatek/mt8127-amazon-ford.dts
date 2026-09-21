@@ -309,6 +309,51 @@
 			vcc-supply = <&reg_1p8v>;
 			iovcc-supply = <&reg_1p8v>;
 		};
+
+		charger: charger@6b {
+			compatible = "ti,bq24296";
+			reg = <0x6b>;
+
+			interrupt-parent = <&pio>;
+			interrupts = <0 IRQ_TYPE_LEVEL_LOW>; /* actually for a different thing */
+
+			omit-battery-class;
+			monitored-battery = <&bat>;
+			status = "disabled";
+		};
+	};
+
+	bat: battery {
+		compatible = "simple-battery";
+		precharge-current-microamp = <300000>;
+		charge-term-current-microamp = <150000>;
+		voltage-min-design-microvolt = <3400000>;
+		voltage-max-design-microvolt = <4200000>;
+		ocv-capacity-celsius = <25>;
+		ocv-capacity-table-0 = <4180000 100>, <4070000 90>, <3980000 80>, <3900000 70>, <3840000 60>, <3780000 50>, <3770000 40>, <3750000 30>, <3650000 20>, <3550000 10>, <3400000 0>;
+		status = "disabled";
+	};
+
+	fuel-gauge {
+		compatible = "adc-battery";
+		io-channels = <&auxadc1 6>, <&auxadc1 5>;
+		io-channel-names = "voltage", "temperature";
+
+		power-supplies = <&charger>;
+		monitored-battery = <&bat>;
+		status = "disabled";
+	};
+
+	keys: kpd@10011000 {
+		compatible = "mediatek,mt6779-keypad";
+		reg = <0 0x10011000 0 0x1000>;
+		interrupts = <GIC_SPI 116 IRQ_TYPE_EDGE_FALLING>;
+		clocks = <&clk26m>;
+		clock-names = "kpd";
+		keypad,num-rows = <4>;
+		keypad,num-columns = <16>;
+		linux,keymap = <114 (65536 + 115)>;
+		wakeup-source;
 	};
 
 	pwrap: pwrap@1000d000 {
@@ -323,15 +368,26 @@
 		<&infracfg CLK_INFRA_PMICWRAP>;
 		clock-names = "spi", "wrap";
 
-		pmic: mt6397 {
-			compatible = "mediatek,mt6397";
+		pmic: mt6323 {
+			compatible = "mediatek,mt6323";
 			interrupt-parent = <&pio>;
 			interrupts = <24 IRQ_TYPE_LEVEL_HIGH>;
 			interrupt-controller;
 			#interrupt-cells = <2>;
 
+			auxadc1: adc {
+				compatible = "mediatek,mt6323-auxadc";
+				#io-channel-cells = <1>;
+			};
+
+			regulators {
+				compatible = "mediatek,mt6323-regulator";
+			};
+
 			keys {
-				compatible = "mediatek,mt6397-keys";
+				compatible = "mediatek,mt6323-keys";
+				mediatek,long-press-mode = <1>;
+				power-off-time-sec = <10>;
 
 				power {
 					linux,keycodes = <116>;
@@ -341,6 +397,10 @@
 				home {
 					linux,keycodes = <114>;
 				};
+			};
+
+			rtc {
+				compatible = "mediatek,mt6323-rtc";
 			};
 		};
 	};

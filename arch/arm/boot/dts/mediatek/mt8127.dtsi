@@ -208,6 +208,14 @@
 			      <0 0x10216000 0 0x2000>;
 		};
 
+		auxadc: adc@11001000 {
+			compatible = "mediatek,mt2701-auxadc";
+			reg = <0 0x11001000 0 0x1000>;
+			clocks = <&clk26m>;
+			clock-names = "main";
+			#io-channel-cells = <1>;
+		};
+
 		uart0: serial@11002000 {
 			compatible = "mediatek,mt8127-uart","mediatek,mt6577-uart";
 			reg = <0 0x11002000 0 0x400>;
