@@ -27,7 +27,7 @@
 			compatible = "simple-framebuffer";
 			width = <1024>;
 			height = <600>;
-			reg = <0 0xb7a00000 0 (1024 * 600 * 2)>;
+			memory-region = <&fbmem>;
 			stride = <(1024 * 2)>;
 			format = "r5g6b5";
 		};
@@ -441,7 +441,7 @@
 
 	memory {
 		device_type = "memory";
-		reg = <0 0x80000000 0 0x37900000>;
+		reg = <0 0x80000000 0 0x39000000>;
 	};
 
 	reserved-memory {
@@ -451,6 +451,11 @@
 
 		mtk_ram_console@83f00000 {
 			reg = <0 0x83F00000 0 0x100000>;
+		};
+
+		fbmem: framebuffer_memory@b7a00000 {
+			reg = <0 0xb7a00000 0 (1024 * 600 * 2)>;
+			no-map;
 		};
 	};
 };
