@@ -27,7 +27,7 @@
 			compatible = "simple-framebuffer";
 			width = <1024>;
 			height = <600>;
-			reg = <0 0xb7a00000 0 (1024 * 600 * 2)>;
+			memory-region = <&fbmem>;
 			stride = <(1024 * 2)>;
 			format = "r5g6b5";
 		};
@@ -178,6 +178,60 @@
 		<&mmsys CLK_MM_DPI_ENGINE>,
 		<&apmixedsys CLK_APMIXED_TVDPLL>;
 		clock-names = "pixel", "engine", "pll";
+
+		port {
+			dpi0_out: endpoint {
+				remote-endpoint = <&bridge_input>;
+			};
+		};
+	};
+
+	panel {
+		compatible = "panel-lvds";
+		width-mm = <152>;
+		height-mm = <86>;
+		data-mapping = "jeida-24";
+		panel-timing {
+			clock-frequency = <67000000>;
+			hactive = <1024>;
+			vactive = <600>;
+			hfront-porch = <160>;
+			hback-porch = <160>;
+			hsync-len = <10>;
+			vsync-len = <10>;
+			vfront-porch = <12>;
+			vback-porch = <23>;
+		};
+		port {
+			lvds0_in: endpoint {
+				remote-endpoint = <&bridge_output>;
+			};
+		};
+	};
+
+	lvds-encoder {
+		compatible = "lvds-encoder";
+
+		ports {
+			#address-cells = <1>;
+			#size-cells = <0>;
+
+			port@0 {
+				reg = <0>;
+
+				bridge_input: endpoint {
+					remote-endpoint = <&dpi0_out>;
+				};
+			};
+
+			port@1 {
+				reg = <1>;
+
+				bridge_output: endpoint {
+					remote-endpoint = <&lvds0_in>;
+				};
+			};
+		};
 	};
 
 	mali: gpu@13040000 {
@@ -319,7 +373,6 @@
 
 			omit-battery-class;
 			monitored-battery = <&bat>;
-			status = "disabled";
 		};
 	};
 
@@ -331,7 +384,6 @@
 		voltage-max-design-microvolt = <4200000>;
 		ocv-capacity-celsius = <25>;
 		ocv-capacity-table-0 = <4180000 100>, <4070000 90>, <3980000 80>, <3900000 70>, <3840000 60>, <3780000 50>, <3770000 40>, <3750000 30>, <3650000 20>, <3550000 10>, <3400000 0>;
-		status = "disabled";
 	};
 
 	fuel-gauge {
@@ -341,7 +393,6 @@
 
 		power-supplies = <&charger>;
 		monitored-battery = <&bat>;
-		status = "disabled";
 	};
 
 	keys: kpd@10011000 {
@@ -441,7 +492,7 @@
 
 	memory {
 		device_type = "memory";
-		reg = <0 0x80000000 0 0x37900000>;
+		reg = <0 0x80000000 0 0x39000000>;
 	};
 
 	reserved-memory {
@@ -451,6 +502,11 @@
 
 		mtk_ram_console@83f00000 {
 			reg = <0 0x83F00000 0 0x100000>;
+		};
+
+		fbmem: framebuffer_memory@b7a00000 {
+			reg = <0 0xb7a00000 0 (1024 * 600 * 2)>;
+			no-map;
 		};
 	};
 };
