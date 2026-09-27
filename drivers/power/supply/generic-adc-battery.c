@@ -64,6 +64,7 @@ static void gab_ext_power_changed(struct power_supply *psy)
 
 static const enum power_supply_property gab_props[] = {
 	POWER_SUPPLY_PROP_STATUS,
+	POWER_SUPPLY_PROP_CAPACITY,
 };
 
 /*
@@ -98,6 +99,19 @@ static int gab_read_channel(struct gab *adc_bat, enum gab_chan_type channel,
 	return ret;
 }
 
+static int gab_estimate_percentage(struct gab *adc_bat, int *result)
+{
+	int ret;
+	int voltage_now;
+	ret = gab_read_channel(adc_bat, GAB_VOLTAGE, result);
+	if (ret >= 0) {
+		*result -= 3400000;
+		*result /= 8000;
+	}
+
+	return ret;
+}
+
 static int gab_get_property(struct power_supply *psy,
 		enum power_supply_property psp, union power_supply_propval *val)
 {
@@ -115,6 +129,8 @@ static int gab_get_property(struct power_supply *psy,
 		return gab_read_channel(adc_bat, GAB_POWER, &val->intval);
 	case POWER_SUPPLY_PROP_TEMP:
 		return gab_read_channel(adc_bat, GAB_TEMP, &val->intval);
+	case POWER_SUPPLY_PROP_CAPACITY:
+		return gab_estimate_percentage(adc_bat, &val->intval);
 	default:
 		return -EINVAL;
 	}
