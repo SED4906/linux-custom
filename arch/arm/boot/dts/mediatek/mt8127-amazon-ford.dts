@@ -492,7 +492,7 @@
 
 	memory {
 		device_type = "memory";
-		reg = <0 0x80000000 0 0x37900000>;
+		reg = <0 0x80000000 0 0x38a00000>;
 	};
 
 	reserved-memory {
@@ -505,12 +505,7 @@
 		};
 
 		fbmem: framebuffer_memory@b7a00000 {
-			reg = <0 0xb7a00000 0 (1024 * 600 * 2)>;
-			no-map;
-		};
-
-		you_can_look_but_do_not_touch@b7900000 {
-			reg = <0 0xb7900000 0 0x1700000>;
+			reg = <0 0xb7a00000 0 0x1000000>;
 			no-map;
 		};
 	};
